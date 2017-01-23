@@ -1,6 +1,6 @@
 # find-all-the-new-words
 - 找出文章中的生词（配合anki使用）
-
+- 示例https://zhuanlan.zhihu.com/p/25003457
 # 依赖
 - Python2.7 
 
