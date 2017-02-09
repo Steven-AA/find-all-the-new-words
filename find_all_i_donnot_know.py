@@ -56,7 +56,7 @@ def read_known_words():
 
 def my_input(output):
     try:
-        judge = input(output)
+        judge = int(input(output))
     except:
         print('Input error! Plz try again:')
         judge = my_input(output)
