@@ -73,11 +73,12 @@ def my_input(output):
     input
     '''
     print output
-    choise = ['0', '1']
+    choise = ['1', '2']
     judge = msvcrt.getch()
     if judge not in choise:
         print 'Input error! Plz try again:'
         judge = my_input(output)
+        return judge
     return judge
 
 def learn(new_words, known_words):
@@ -89,9 +90,9 @@ def learn(new_words, known_words):
     for word in new_words:
         num -= 1
         judge = my_input(word+'('+str(num)+' Left)\n')
-        if judge == 1:
+        if judge == '1':
             known_words.add(word)
-    return new_words - known_words
+    return new_words - known_words,known_words
 
 def write_each_new_words(name, new_words):
     '''
@@ -127,7 +128,7 @@ if __name__ == '__main__':
         new_words = read_new_words(path_1, KNOWN_WORDS)
         if new_words:
             if FLAG == 1:
-                new_words = learn(new_words, KNOWN_WORDS)
+                new_words, KNOWN_WORDS = learn(new_words, KNOWN_WORDS)
                 if new_words:
                     print 'new words:'
                     print new_words
@@ -136,7 +137,7 @@ if __name__ == '__main__':
             else:
                 NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
     with open('./old.txt', 'w') as old:
-        old.write(' '.join(known_words))
+        old.write(' '.join(KNOWN_WORDS))
     with open('./new.txt', 'w') as new:
         new.write('\n'.join(NEM_WORDS_ALL))
     # print(ord(msvcrt.getch()))
