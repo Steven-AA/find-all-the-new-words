@@ -3,6 +3,7 @@
 import os
 import re
 import msvcrt
+from pattern3.en import lemma
 # number_of_all_words = 0
 
 
@@ -14,6 +15,7 @@ def real_word(word):
     word = p_forword.findall(word)
     str = ''
     real_word = str.join(word)
+    real_word = lemma(real_word)
     return real_word.lower()
 
 
@@ -80,11 +82,10 @@ def my_input(output):
     input
     '''
     print(output)
-    choise = [1, 2]
-    judge = msvcrt.getch()
-    while judge.decode('utf-8') == '\x00':
-        judge = msvcrt.getch()
-    judge = int(judge)
+    choise = ['1', '2']
+    judge = msvcrt.getch().decode('utf-8')
+    while judge == '\x00':
+        judge = msvcrt.getch().decode('utf-8')
     if judge not in choise:
         print('Input error! Plz try again:')
         judge = my_input(output)
@@ -101,7 +102,7 @@ def learn(new_words, known_words):
     for word in new_words:
         num -= 1
         judge = my_input(word+'('+str(num)+' Left)\n')
-        if judge == 1:
+        if judge == '1':
             known_words.add(word)
     return new_words - known_words, known_words
 
