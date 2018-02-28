@@ -1,7 +1,7 @@
 # find-all-the-new-words
 
 - 找出文章中的生词（配合anki使用）
-- 示例https://zhuanlan.zhihu.com/p/25003457
+- 示例 [先背生词，再看文章 FAIDK0.1.0](https://zhuanlan.zhihu.com/p/25003457)
 
 ## 依赖
 
@@ -42,4 +42,4 @@
 
 ## 关于anki
 
-- https://zhuanlan.zhihu.com/-anki
+- [Anki——近乎完美的神器](https://zhuanlan.zhihu.com/-anki)
