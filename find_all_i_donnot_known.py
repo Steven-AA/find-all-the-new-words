@@ -4,7 +4,16 @@ import os
 import re
 import msvcrt
 from pattern3.en import lemma
+import json
 # number_of_all_words = 0
+config = {
+    'CONFIG_PATH': 'FAIDN.config',
+    'MAIN_PATH': './',
+    'NEW_WORDS_PATH': 'new.txt',
+    'OLD_WORDS_PATH': 'old.txt',
+    'ARTICLES_PATH': 'articles/',
+    'NEW_WORDS_EACH_ARTICLE_PATH': 'new_words_of_each_article/',
+}
 
 
 def real_word(word):
@@ -56,7 +65,7 @@ def get_name(path):
     try:
         names = os.listdir(path)
     except:
-        os.mkdir('../articles/')
+        os.mkdir(config['MAIN_PATH'] + config['ARTICLES_PATH'])
         names = os.listdir(path)
     return names
 
@@ -65,10 +74,11 @@ def read_known_words():
     '''
     load the word have known'''
     try:
-        with open('./old.txt')as f:
+        with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'])as f:
             all_the_words = f.read()
     except:
-        print('\'old.txt\' missing......')
+        print('\'' + config['MAIN_PATH'] +
+              config['OLD_WORDS_PATH'] + '\' missing......')
         all_the_words = ""
     known_words = split_the_article(all_the_words)
     print(known_words)
@@ -112,20 +122,46 @@ def write_each_new_words(name, new_words):
     write new words by each article
     '''
     try:
-        os.makedirs('./new_words_of_each_article/')
+        os.makedirs(config['MAIN_PATH'] +
+                    config['NEW_WORDS_EACH_ARTICLE_PATH'])
     except:
         pass
     try:
-        with open('./new_words_of_each_article/'+name, 'w') as f_words:
+        with open(config['MAIN_PATH'] + config['NEW_WORDS_EACH_ARTICLE_PATH'] + name, 'w') as f_words:
             f_words.write('\n'.join(new_words))
     except:
-        print('failed to creat file of \'./new_words_of_each_article/'+name+'\'')
+        print('failed to creat file of \'' + config['MAIN_PATH'] +
+              config['NEW_WORDS_EACH_ARTICLE_PATH'] + name + '\'')
+
+
+def load_config():
+    global config
+    print('loading config from ' + config['CONFIG_PATH'] + '...')
+    try:
+        local_config = json.load(open(config['CONFIG_PATH']))
+    except Exception as e:
+        print('loading config failed\n writing default config to ' +
+              config['MAIN_PATH'])
+        json.dump(config, open(config['CONFIG_PATH'], 'w'))
+        return
+    try:
+        for key in config:
+            local_config[key]
+    except Exception as e:
+        print(str(e) + ' error')
+        print('local config error, using default config')
+        return
+    config = local_config
+    print('using local config')
+    return
 
 
 if __name__ == '__main__':
     '''
     main
     '''
+    load_config()
+    exit()
     FLAG = 3
     while FLAG != 1 and FLAG != 2:
         print('print 1 to build model\nprint 2 to find model\n \
@@ -133,7 +169,7 @@ if __name__ == '__main__':
         FLAG = int(msvcrt.getch())
     NEM_WORDS_ALL = set()
     KNOWN_WORDS = read_known_words()
-    PATH = r'./articles'
+    PATH = config['MAIN_PATH'] + config['ARTICLES_PATH']
     FILE_NAMES = get_name(PATH)
     print(FILE_NAMES)
     for file_name in FILE_NAMES:
@@ -150,8 +186,8 @@ if __name__ == '__main__':
                     NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
             else:
                 NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
-    with open('./old.txt', 'w') as old:
-        old.write(' '.join(KNOWN_WORDS))
-    with open('./new.txt', 'w') as new:
+    with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'], 'w') as old:
+        old.write('\n'.join(KNOWN_WORDS))
+    with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'], 'w') as new:
         new.write('\n'.join(NEM_WORDS_ALL))
     # print(ord(msvcrt.getch()))
