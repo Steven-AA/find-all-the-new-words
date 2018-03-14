@@ -161,7 +161,6 @@ if __name__ == '__main__':
     main
     '''
     load_config()
-    exit()
     FLAG = 3
     while FLAG != 1 and FLAG != 2:
         print('print 1 to build model\nprint 2 to find model\n \
