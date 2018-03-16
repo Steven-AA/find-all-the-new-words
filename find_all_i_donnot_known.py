@@ -149,7 +149,7 @@ def load_config():
     except Exception as e:
         print('loading config failed\n writing default config to ' +
               config['MAIN_PATH'])
-        json.dump(config, open(config['CONFIG_PATH'], 'w'))
+        json.dump(config, open(config['CONFIG_PATH'], 'w'), indent=4)
         return
     try:
         for key in config:
@@ -171,8 +171,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--mode', '-m', help='work mode\n 1 for build mode \n 2 for find mode \n default None', default=None)
     parser.add_argument(
-        '--config', help = 'use local config', dest='config', default = True, action = 'store_true')
-    parser.add_argument('--no-config', help='not use local config', dest='config', action = 'store_false')
+        '--config', help='use local config', dest='config', default=True, action='store_true')
+    parser.add_argument('--no-config', help='not use local config',
+                        dest='config', action='store_false')
 
     args = parser.parse_args()
     if args.config:
