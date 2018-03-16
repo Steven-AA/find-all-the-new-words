@@ -1,10 +1,13 @@
 #!python3
 # coding:utf-8
+import argparse
+import json
+import msvcrt
 import os
 import re
-import msvcrt
+
 from pattern3.en import lemma
-import json
+
 # number_of_all_words = 0
 config = {
     'CONFIG_PATH': 'FAIDN.config',
@@ -43,8 +46,12 @@ def read_new_words(path, known_words):
     '''
     read new words from article
     '''
-    with open(path)as f_article:
-        article = f_article.read()
+    try:
+        with open(path, encoding='gbk')as f_article:
+            article = f_article.read()
+    except:
+        with open(path, encoding='utf8')as f_article:
+            article = f_article.read()
     words = split_the_article(article)
     print('there are {} words in {}'.format(len(words), path))
     new_words = words - known_words
@@ -160,8 +167,24 @@ if __name__ == '__main__':
     '''
     main
     '''
-    load_config()
-    FLAG = 3
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--mode', '-m', help='work mode\n 1 for build mode \n 2 for find mode \n default None', default=None)
+    parser.add_argument(
+        '--config', help = 'use local config', dest='config', default = True, action = 'store_true')
+    parser.add_argument('--no-config', help='not use local config', dest='config', action = 'store_false')
+
+    args = parser.parse_args()
+    if args.config:
+        load_config()
+    if args.mode is not None:
+        try:
+            FLAG = int(args.mode)
+        except Exception as e:
+            print(e)
+            FLAG = None
+    else:
+        FLAG = None
     while FLAG != 1 and FLAG != 2:
         print('print 1 to build model\nprint 2 to find model\n \
         here to get some help:https://zhuanlan.zhihu.com/p/25003457\n')
