@@ -1,10 +1,10 @@
 .vscode
-/articles/
-/new_words_of_each_article/
+/articles/*
+/new_words_of_each_article/*
 build
 dist
 *.spec
 __pycache__
-exe
+/exe/
 old.txt
 
