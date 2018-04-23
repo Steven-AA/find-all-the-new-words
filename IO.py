@@ -1,6 +1,9 @@
 import json
 import msvcrt
 
+import click
+
+
 class IO(object):
     def __init__(self):
         self.config = {
@@ -42,9 +45,11 @@ class IO(object):
         try:
             local_config = json.load(open(self.config['CONFIG_PATH']))
         except Exception as e:
-            print('loading config failed\n write default config to ' +
-                self.config['MAIN_PATH'] + '(y/n)')
-            json.dump(self.config, open(self.config['CONFIG_PATH'], 'w'), indent=4)
+            if click.confirm('loading config failed\n write default config to ' +
+                self.config['MAIN_PATH'] + '?',default=True):
+                json.dump(self.config, open(self.config['CONFIG_PATH'], 'w'), indent=4)
+            else:
+                exit()
             return
         try:
             for key in self.config:
