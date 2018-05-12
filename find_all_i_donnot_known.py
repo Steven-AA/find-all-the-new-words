@@ -1,68 +1,9 @@
 #!python3
 # coding:utf-8
 import argparse
-import json
-import msvcrt
 import os
 import re
 
-from pattern3.en import lemma
-
-# number_of_all_words = 0
-config = {
-    'CONFIG_PATH': 'FAIDN.config',
-    'MAIN_PATH': './',
-    'NEW_WORDS_PATH': 'new.txt',
-    'OLD_WORDS_PATH': 'old.txt',
-    'ARTICLES_PATH': 'articles/',
-    'NEW_WORDS_EACH_ARTICLE_PATH': 'new_words_of_each_article/',
-}
-
-
-def real_word(word):
-    '''
-    find the real word
-    '''
-    p_forword = re.compile('[a-z,A-Z,\',‘]')
-    word = p_forword.findall(word)
-    str = ''
-    real_word = str.join(word)
-    real_word = lemma(real_word)
-    return real_word.lower()
-
-
-def split_the_article(article):
-    '''
-    sklit the article
-    '''
-    sep = re.compile('[\r\n., ]')
-    words = re.split(sep, article)
-    filcts = (real_word(word) for word in words)
-    set_of_words = set(filcts)
-    return set_of_words
-
-
-def read_new_words(path, known_words):
-    '''
-    read new words from article
-    '''
-    try:
-        with open(path, encoding='gbk')as f_article:
-            article = f_article.read()
-    except:
-        with open(path, encoding='utf8')as f_article:
-            article = f_article.read()
-    words = split_the_article(article)
-    print('there are {} words in {}'.format(len(words), path))
-    new_words = words - known_words
-    num = len(new_words)
-    if num == 0:
-        print('No new word')
-    elif num == 1:
-        print('only 1 new word')
-    else:
-        print(str(num) + ' of them are new words')
-    return new_words
 
 
 def get_name(path):

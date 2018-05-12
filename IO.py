@@ -44,20 +44,19 @@ class IO(object):
         print('loading config from ' + self.config['CONFIG_PATH'] + '...')
         try:
             local_config = json.load(open(self.config['CONFIG_PATH']))
-        except Exception as e:
-            if click.confirm('loading config failed\n write default config to ' +
-                self.config['MAIN_PATH'] + '?',default=True):
-                json.dump(self.config, open(self.config['CONFIG_PATH'], 'w'), indent=4)
-            else:
-                exit()
-            return
-        try:
             for key in self.config:
                 local_config[key]
         except Exception as e:
-            print(str(e) + ' error')
-            print('local config error, using default config')
-            return
+            print(e)
+            if click.confirm('loading config failed\n write default config to ' +
+                self.config['MAIN_PATH'] + '?',default=True):
+                json.dump(self.config, open(self.config['CONFIG_PATH'], 'w'), indent=4)
+                return
+            if click.confirm('Use default config?', default=True):
+                print(self.config)
+                print('using default config')
+                return
+            exit()
         self.config = local_config
         print('using local config')
         return
