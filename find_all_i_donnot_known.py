@@ -6,7 +6,7 @@ import msvcrt
 import os
 import re
 
-from pattern3.en import lemma
+# from pattern3.en import lemma
 
 # number_of_all_words = 0
 config = {
@@ -27,7 +27,7 @@ def real_word(word):
     word = p_forword.findall(word)
     str = ''
     real_word = str.join(word)
-    real_word = lemma(real_word)
+    # real_word = lemma(real_word)
     return real_word.lower()
 
 
@@ -211,6 +211,6 @@ if __name__ == '__main__':
                 NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
     with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'], 'w') as old:
         old.write('\n'.join(KNOWN_WORDS))
-    with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'], 'w') as new:
+    with open(config['MAIN_PATH'] + config['NEW_WORDS_PATH'], 'w') as new:
         new.write('\n'.join(NEM_WORDS_ALL))
     # print(ord(msvcrt.getch()))
