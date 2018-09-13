@@ -20,7 +20,8 @@ def get_name(path):
 
 def read_known_words():
     '''
-    load the word have known'''
+    load the word have known
+    '''
     try:
         with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'])as f:
             all_the_words = f.read()
@@ -119,6 +120,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.config:
         load_config()
+    FLAG = None
     if args.mode is not None:
         try:
             FLAG = int(args.mode)
