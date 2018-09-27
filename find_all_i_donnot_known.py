@@ -154,6 +154,6 @@ if __name__ == '__main__':
                 NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
     with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'], 'w') as old:
         old.write('\n'.join(KNOWN_WORDS))
-    with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'], 'w') as new:
+    with open(config['MAIN_PATH'] + config['NEW_WORDS_PATH'], 'w') as new:
         new.write('\n'.join(NEM_WORDS_ALL))
     # print(ord(msvcrt.getch()))
