@@ -67,9 +67,6 @@ class IO(object):
     def if_expect_key(self, key, expect_key):
         if key not in  expect_key:
                 return False
-        else:
-            if key != expect_key:
-                return False
         return True
 
     def load_json(self,path):

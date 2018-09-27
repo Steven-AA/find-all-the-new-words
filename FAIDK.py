@@ -3,7 +3,7 @@ import time
 import argparse
 
 import Article
-import IO
+import safe_IO
 
 
 
@@ -43,7 +43,8 @@ def main():
     while FLAG != 1 and FLAG != 2:
         print('print 1 to build model\nprint 2 to find model\n \
         here to get some help:https://zhuanlan.zhihu.com/p/25003457\n')
-        FLAG = int(msvcrt.getch())
+        FLAG = safe_IO.safe_get_input(['1','2'])
+        # FLAG = int(msvcrt.getch())
     NEM_WORDS_ALL = set()
     KNOWN_WORDS = IO.read_known_words(CONFIG['MAIN_PATH'] + CONFIG['OLD_WORDS_PATH'])
     FILE_NAMES = os.listdir(CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'])
