@@ -1,6 +1,6 @@
 import re
 
-import IO
+from safe_IO import *
 
 
 class Article(object):
@@ -9,38 +9,17 @@ class Article(object):
         # self.config = IO.load_json(self.config[CONFIG_PATH])
         self.file_path = path
         OLD_WORDS_PATH = self.config['MAIN_PATH'] + self.config['OLD_WORDS_PATH']
-        self.old_words = self.read_article(OLD_WORDS_PATH)
-        self.article = self.read_article()
+        self.known_words = self.split_the_article(self.read_old_words(OLD_WORDS_PATH))
+        self.article = read_article_from_file(self.file_path)
         self.words = self.split_the_article(self.article,self.file_path)
         self.new_words = self.read_new_words()
 
-    def read_known_words(self,path):
-        '''
-        load the word have known
-        '''
+    def read_old_words(self,path):
         try:
-            with open(path)as f:
-                all_the_words = f.read()
+            return read_article_from_file(path)
         except:
-            print('\'' + path + '\' missing......')
-            all_the_words = ""
-        known_words = self.split_the_article(all_the_words,self.config['OLD_WORDS_PATH'])
-        num = len(known_words)
-        print('There are {} words in {}'.format(str(num),self.config['OLD_WORDS_PATH']))
-        return known_words
-
-    def read_article(self):
-        '''
-        read file with different encoding
-        '''
-        try:
-            with open(self.file_path, encoding='gbk')as f_article:
-                article = f_article.read()
-        except:
-            with open(self.file_path, encoding='utf8')as f_article:
-                article = f_article.read()
-        return article
-
+            print('missing ' + path)
+            return ''
     def real_word(self, word):
         '''
         find the real word
@@ -50,7 +29,7 @@ class Article(object):
         real_word = ''.join(word)
         return real_word.lower()
 
-    def split_the_article(self,Article,name=None):
+    def split_the_article(self, Article,name=None):
         '''
         split the article
         '''
@@ -64,11 +43,26 @@ class Article(object):
             print('there are {} words in {}'.format(len(set_of_words), name))
         return set_of_words
 
+    def read_known_words(self,path):
+        '''
+        load the word have known
+        '''
+        try:
+            with open(path)as f:
+                all_the_words = f.read()
+        except:
+            print('\'' + path + '\' missing......')
+            all_the_words = ""
+        known_words = split_the_article(all_the_words,self.config['OLD_WORDS_PATH'])
+        num = len(known_words)
+        print('There are {} words in {}'.format(str(num),self.config['OLD_WORDS_PATH']))
+        return known_words
+
     def read_new_words(self):
         '''
         read new words from article
         '''
-        new_words = self.words - self.old_words
+        new_words = self.words - self.known_words
         num = len(new_words)
         if num == 0:
             print('No new word')
@@ -82,11 +76,11 @@ class Article(object):
         '''
         learn new words & build
         '''
-        num = len(new_words)
+        num = len(self.new_words)
         print('if you know the word print 1, else print 2')
         for word in self.new_words:
             num -= 1
             judge = my_input(word+'('+str(num)+' Left)\n')
             if judge == '1':
-                known_words.add(word)
+                self.known_words.add(word)
         return self.new_words - self.known_words, self.known_words

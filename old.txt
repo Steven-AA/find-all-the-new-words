@@ -1,0 +1,7 @@
+
+focus
+radius
+yes
+this
+less
+minus
