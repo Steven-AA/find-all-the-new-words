@@ -45,6 +45,7 @@ def main():
         # FLAG = int(msvcrt.getch())
     NEM_WORDS_ALL = set()
     FILE_NAMES = os.listdir(CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'])
+    NEW_WORDS_EACH_ARTICLE_PATH = CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_EACH_ARTICLE_PATH']
     for file in FILE_NAMES:
         path = CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'] + file
         article = Article(CONFIG,path)
@@ -53,12 +54,13 @@ def main():
             if new_words:
                 print('new words:')
                 print(new_words)
-                safe_IO.write_each_new_words(CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_EACH_ARTICLE_PATH'],file, new_words)
+                safe_IO.write_each_new_words(NEW_WORDS_EACH_ARTICLE_PATH,file, new_words)
                 NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
         else:
             new_words = article.new_words
             KNOWN_WORDS = article.known_words
             NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
+            safe_IO.write_each_new_words(NEW_WORDS_EACH_ARTICLE_PATH, file, new_words)
         with open(CONFIG['MAIN_PATH'] + CONFIG['OLD_WORDS_PATH'], 'w') as old:
             old.write('\n'.join(KNOWN_WORDS))
         with open(CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_PATH'], 'w') as new:

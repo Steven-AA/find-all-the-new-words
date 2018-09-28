@@ -41,11 +41,12 @@ def write_each_new_words(path, name, new_words):
     try:
         os.makedirs(path)
     except Exception as e:
-        print(e)
+        # print(e)
         pass
     try:
         with open(path + name, 'w') as f_words:
             f_words.write('\n'.join(new_words))
+        print('write new word to file \'' +path + name + '\'')
     except:
         print('failed to creat file of \'' +path + name + '\'')
 
