@@ -5,8 +5,6 @@ import os
 
 import click
 
-
-
 strange_key = ['\x00']
 
     # def get_name(self,path):
@@ -107,6 +105,9 @@ def load_json(path):
         'OLD_WORDS_PATH': 'old.txt',
         'ARTICLES_PATH': 'articles/',
         'NEW_WORDS_EACH_ARTICLE_PATH': 'new_words_of_each_article/',
+        'LEMMATIZATION_PATH': 'lemmatization-en.txt',
+        'LEMMATIZATION_MODE': 'list',
+        'LEMMATIZATION_MODE_AVAILABLE':"['None,'list','NLTK','both']",
     }
     print('Loading config from ' + path + '...')
     try:
@@ -127,3 +128,13 @@ def load_json(path):
             return config
         exit()
 
+def load_lemmatization_list_to_dic(mode):
+    if mode in ['list','both']:
+        print('loading dic')
+        import pandas as pd
+        dic_data = pd.read_csv('./lemmatization-en.txt',sep='\t',header=None)
+        value = list(dic_data.iloc[:,0])
+        key = list(dic_data.iloc[:,1])
+        fix_dic = dict(zip(key,value))
+        return fix_dic
+    return None

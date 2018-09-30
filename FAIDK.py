@@ -1,9 +1,10 @@
 import argparse
 import logging
-import time
 import os
-from Article import Article
+import time
+
 import safe_IO
+from Article import Article
 
 # FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
 # logging.basicConfig(format=FORMAT)
@@ -20,15 +21,15 @@ def main():
     parser.add_argument('--no-config', help='not use local config',
                         dest='config', action='store_false')
     args = parser.parse_args()
-    CONFIG = {
-            'CONFIG_PATH': 'FAIDN.config',
-            'MAIN_PATH': './',
-            'NEW_WORDS_PATH': 'new.txt',
-            'OLD_WORDS_PATH': 'old.txt',
-            'ARTICLES_PATH': 'articles/',
-            'NEW_WORDS_EACH_ARTICLE_PATH': 'new_words_of_each_article/',
-        }
-    CONFIG = safe_IO.load_json(CONFIG['CONFIG_PATH'])
+    # CONFIG = {
+    #         'CONFIG_PATH': 'FAIDN.config',
+    #         'MAIN_PATH': './',
+    #         'NEW_WORDS_PATH': 'new.txt',
+    #         'OLD_WORDS_PATH': 'old.txt',
+    #         'ARTICLES_PATH': 'articles/',
+    #         'NEW_WORDS_EACH_ARTICLE_PATH': 'new_words_of_each_article/',
+    #     }
+    CONFIG = safe_IO.load_json('./FAIDN.config')
     FLAG = None
     if args.mode is not None:
         try:

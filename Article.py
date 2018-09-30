@@ -8,11 +8,15 @@ class Article(object):
         self.config = config
         # self.config = IO.load_json(self.config[CONFIG_PATH])
         self.file_path = path
+        self.fix_dic = load_lemmatization_list_to_dic(self.config['LEMMATIZATION_MODE'])
+        if self.config['LEMMATIZATION_MODE'] in ['NLTK','both']:
+            from nltk.stem import WordNetLemmatizer
         OLD_WORDS_PATH = self.config['MAIN_PATH'] + self.config['OLD_WORDS_PATH']
         self.known_words = self.split_the_article(self.read_old_words(OLD_WORDS_PATH))
         self.article = read_article_from_file(self.file_path)
         self.words = self.split_the_article(self.article,self.file_path)
         self.new_words = self.read_new_words()
+        
 
     def read_old_words(self,path):
         try:
@@ -20,14 +24,24 @@ class Article(object):
         except:
             print('missing ' + path)
             return ''
+
     def real_word(self, word):
         '''
         find the real word
         '''
         p_forword = re.compile('[a-z,A-Z,\',‘]')
         word = p_forword.findall(word)
-        real_word = ''.join(word)
-        return real_word.lower()
+        real_word = ''.join(word).lower()
+        if self.config['LEMMATIZATION_MODE'] in ['list','both']:
+            try:
+                real_word = self.fix_dic[real_word]
+            except Exception as e:
+                # print(e)
+                pass
+        if self.config['LEMMATIZATION_MODE'] in ['NLTK','both']:
+            wordnet_lemmatizer = WordNetLemmatizer()
+            real_word = wordnet_lemmatizer.lemmatize(real_word)
+        return real_word
 
     def split_the_article(self, Article,name=None):
         '''
