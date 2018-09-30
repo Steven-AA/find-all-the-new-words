@@ -19,7 +19,7 @@
 
 ## 最近一次更新 2018年09月30日 2.0.2
 
-- 词形还原，提供四种模式，修改`FAIDN.config`中的`LEMMATIZATION_MODE`来修改，目前支持四种模式。这里需要感谢
+- 词形还原，提供四种模式，修改`FAIDN.config`中的`LEMMATIZATION_MODE`来修改，目前支持四种模式。这里需要感谢[@ninja33](https://github.com/ninja33)
     - `None`不做处理
     - `list`使用字典映射来词形还原。字典来自[这里](https://github.com/michmech/lemmatization-lists/blob/master/lemmatization-en.txt)，里面共有条41760词条，如果文章中的单词不在此字典中，保持原样
     - `NLTK`
@@ -34,6 +34,22 @@
 - [ ] 文章含有过多生词自动切割
 - [ ] 自定义 config 路径
 - [ ] 多 config 选择
+
+## 使用
+
+- 把文章放在 `./article` 文件夹中
+- build 模式用来建立自己的词汇库，即 `old.txt`，同时也可以将新单词列出来，建议建立的时候挑选较短的文章，一篇一篇来
+- 词库建立好了就可以使用 `find` 模式批量查找生词
+
+## exe文件
+
+- exe文件 release 里面
+- 解压后 ，快捷方式需要你自己重新创建
+- 如果还需要帮助，你可以参考上面给的示例
+
+## 关于anki
+
+- [Anki——近乎完美的神器](https://zhuanlan.zhihu.com/-anki)
 
 ## 更新
 
@@ -86,19 +102,3 @@
 - 按照pylint规范化代码
 - 添加0.2.0的exe程序
 - 修复.py与exe不同的路径情况（用于生成exe的Python文件已放入压缩包）
-
-## 使用
-
-- 把文章放在 `./article` 文件夹中
-- build 模式用来建立自己的词汇库，即 `old.txt`，同时也可以将新单词列出来，建议建立的时候挑选较短的文章，一篇一篇来
-- 词库建立好了就可以使用 `find` 模式批量查找生词
-
-## exe文件
-
-- exe文件 release 里面
-- 解压后 ，快捷方式需要你自己重新创建
-- 如果还需要帮助，你可以参考上面给的示例
-
-## 关于anki
-
-- [Anki——近乎完美的神器](https://zhuanlan.zhihu.com/-anki)
