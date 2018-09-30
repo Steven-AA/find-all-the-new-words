@@ -1,5 +1,7 @@
 import re
 
+from nltk.stem import WordNetLemmatizer
+
 from safe_IO import *
 
 
@@ -9,8 +11,6 @@ class Article(object):
         # self.config = IO.load_json(self.config[CONFIG_PATH])
         self.file_path = path
         self.fix_dic = load_lemmatization_list_to_dic(self.config['LEMMATIZATION_MODE'])
-        if self.config['LEMMATIZATION_MODE'] in ['NLTK','both']:
-            from nltk.stem import WordNetLemmatizer
         OLD_WORDS_PATH = self.config['MAIN_PATH'] + self.config['OLD_WORDS_PATH']
         self.known_words = self.split_the_article(self.read_old_words(OLD_WORDS_PATH))
         self.article = read_article_from_file(self.file_path)
