@@ -1,5 +1,6 @@
 import json
 import logging
+import logging.config
 import msvcrt
 import os
 
@@ -17,17 +18,19 @@ strange_key = ['\x00']
     #         os.mkdir(config['MAIN_PATH'] + config['ARTICLES_PATH'])
     #         names = os.listdir(path)
     #     return names
+logger = logging.getLogger('FAIDN.safe_IO')
+
 def my_input(output):
     '''
     input
     '''
-    print(output)
+    logger.info(output)
     choise = ['1', '2']
     judge = msvcrt.getch().decode('utf-8')
     while judge == '\x00':
         judge = msvcrt.getch().decode('utf-8')
     if judge not in choise:
-        print('Input error! Plz try again:')
+        logger.info('Input error! Plz try again:')
         judge = my_input(output)
         return judge
     return judge
@@ -39,14 +42,14 @@ def write_each_new_words(path, name, new_words):
     try:
         os.makedirs(path)
     except Exception as e:
-        # print(e)
+        logger.debug(e)
         pass
     try:
         with open(path + name, 'w') as f_words:
             f_words.write('\n'.join(new_words))
-        print('write new word to file \'' +path + name + '\'')
+        logger.info('write new word to file \'' +path + name + '\'')
     except:
-        print('failed to creat file of \'' +path + name + '\'')
+        logger.info('failed to creat file of \'' +path + name + '\'')
 
 def read_known_words():
     '''
@@ -56,13 +59,13 @@ def read_known_words():
         with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'])as f:
             all_the_words = f.read()
     except:
-        print('\'' + config['MAIN_PATH'] +
+        logger.info('\'' + config['MAIN_PATH'] +
             config['OLD_WORDS_PATH'] + '\' missing......')
         all_the_words = ""
     known_words = split_the_article(all_the_words)
-    print(known_words)
+    logger.info(known_words)
     num = len(known_words)
-    print('There are ' + str(num) + ' words I have known')
+    logger.info('There are ' + str(num) + ' words I have known')
     return known_words
 
 def read_article_from_file(path):
@@ -86,11 +89,11 @@ def input_without_strange_key():
 
 def safe_get_input(expect_key, Error_msg='Input Error, plz retry.', output_msg='plz input:\n'):
     while True:
-        print(output_msg)
+        logger.info(output_msg)
         key = input_without_strange_key()
         if if_expect_key(key, expect_key):
             return key
-        print(Error_msg)
+        logger.info(Error_msg)
 
 def if_expect_key(key, expect_key):
     if key not in  expect_key:
@@ -109,32 +112,33 @@ def load_json(path):
         'LEMMATIZATION_MODE': 'list',
         'LEMMATIZATION_MODE_AVAILABLE':"['None,'list','NLTK','both']",
     }
-    print('Loading config from ' + path + '...')
+    logger.info('Loading config from ' + path + '...')
     try:
         local_config = json.load(open(path))
         for key in config:
             local_config[key]
-        print('Using local config')
+        logger.info('Using local config')
         return local_config
     except Exception as e:
-        print(e)
+        logger.warning(e)
         if click.confirm('Loading config failed\n Write default config to ' +
             config['MAIN_PATH'] + '?',default=True):
             json.dump(config, open(config['CONFIG_PATH'], 'w'), indent=4)
             return config
         if click.confirm('Use default config?', default=True):
-            print(config)
-            print('Using default config')
+            logger.info(config)
+            logger.info('Using default config')
             return config
         exit()
 
 def load_lemmatization_list_to_dic(mode):
     if mode in ['list','both']:
-        print('loading dic')
+        logger.info('loading dic')
         import pandas as pd
         dic_data = pd.read_csv('./lemmatization-en.txt',sep='\t',header=None)
         value = list(dic_data.iloc[:,0])
         key = list(dic_data.iloc[:,1])
         fix_dic = dict(zip(key,value))
+        logger.info('Done')
         return fix_dic
     return None

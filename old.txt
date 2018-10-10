@@ -1,7 +1,0 @@
-
-focus
-minus
-this
-radius
-yes
-less

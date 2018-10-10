@@ -6,11 +6,8 @@ import time
 import safe_IO
 from Article import Article
 
-# FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
-# logging.basicConfig(format=FORMAT)
-# logging_name = time.strftime('%Y-%m-%d-%H',time.localtime())
-# file_handler = logging.FileHandler("{}.log".format(logging_name))  
-# file_handler.setFormatter(formatter)  
+logging.config.fileConfig('./logging.config')
+logger = logging.getLogger('FAIDN')
 
 def main():
     parser = argparse.ArgumentParser()
@@ -21,29 +18,20 @@ def main():
     parser.add_argument('--no-config', help='not use local config',
                         dest='config', action='store_false')
     args = parser.parse_args()
-    # CONFIG = {
-    #         'CONFIG_PATH': 'FAIDN.config',
-    #         'MAIN_PATH': './',
-    #         'NEW_WORDS_PATH': 'new.txt',
-    #         'OLD_WORDS_PATH': 'old.txt',
-    #         'ARTICLES_PATH': 'articles/',
-    #         'NEW_WORDS_EACH_ARTICLE_PATH': 'new_words_of_each_article/',
-    #     }
     CONFIG = safe_IO.load_json('./FAIDN.config')
     FLAG = None
     if args.mode is not None:
         try:
             FLAG = int(args.mode)
         except Exception as e:
-            print(e)
+            logger.debug(e)
             FLAG = None
     else:
         FLAG = None
     while FLAG != 1 and FLAG != 2:
-        print('print 1 to build model\nprint 2 to find model\n \
+        logger.info('\tprint 1 to build model\n\t\t\tprint 2 to find model\n\t\t\t \
         here to get some help:https://zhuanlan.zhihu.com/p/25003457\n')
         FLAG = int(safe_IO.safe_get_input(['1','2']))
-        # FLAG = int(msvcrt.getch())
     NEM_WORDS_ALL = set()
     FILE_NAMES = os.listdir(CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'])
     NEW_WORDS_EACH_ARTICLE_PATH = CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_EACH_ARTICLE_PATH']
@@ -53,8 +41,8 @@ def main():
         if FLAG==1:
             new_words, KNOWN_WORDS = article.learn()
             if new_words:
-                print('new words:')
-                print(new_words)
+                logger.info('new words:')
+                logger.info(new_words)
                 safe_IO.write_each_new_words(NEW_WORDS_EACH_ARTICLE_PATH,file, new_words)
                 NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
         else:
