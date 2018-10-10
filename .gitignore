@@ -9,4 +9,4 @@ __pycache__
 old.txt
 test.txt
 new.txt
-./log/*
+/log/FAIDN.log
