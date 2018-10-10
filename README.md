@@ -8,23 +8,24 @@
 - Python3.6
 
 ## 交流
+
 - 维护一个QQ群，万一有人用呢，也满足一下我的虚荣心，更新可能快点。737389550 
-<div align=center>
-<img src="https://i.loli.net/2018/09/29/5baedf2a2bd6d.jpg" width = "100"/>
-</div>
+
+<div align=center><img src="https://i.loli.net/2018/09/29/5baedf2a2bd6d.jpg" width = "100"/></div>
 
 ## 已知bug
 
 - exe 等测试一段时间没什么问题就打包
 
-## 最近一次更新 2018年09月30日 2.0.2
+## 最近的更新
 
+- 使用`logging`替代`print`
+- 增加`/log/FAIDN.log`文件
 - 词形还原，提供四种模式，修改`FAIDN.config`中的`LEMMATIZATION_MODE`来修改，目前支持四种模式。这里需要感谢[@ninja33](https://github.com/ninja33)
-    - `None`不做处理
-    - `list`使用字典映射来词形还原。字典来自[这里](https://github.com/michmech/lemmatization-lists/blob/master/lemmatization-en.txt)，里面共有条41760词条，如果文章中的单词不在此字典中，保持原样
-    - `NLTK`
-    - `both`先使用字典，后使用`NLTK`
-
+  - `None`不做处理
+  - `list`使用字典映射来词形还原。字典来自[这里](https://github.com/michmech/lemmatization-lists/blob/master/lemmatization-en.txt)，里面共有条41760词条，如果文章中的单词不在此字典中，保持原样
+  - `NLTK`
+  - `both`先使用字典，后使用`NLTK`
 
 ## 即将到来的新 Feature 预告
 
@@ -53,13 +54,18 @@
 
 ## 更新
 
+### 2018年10月10日 2.0.3
+
+- 使用`logging`替代`print`
+- 增加`/log/FAIDN.log`文件
+
 ### 2018年09月30日 2.0.2
 
 - 词形还原，提供四种模式，修改`FAIDN.config`中的`LEMMATIZATION_MODE`来修改模式，目前支持四种模式。这里需要感谢[@ninja33](https://github.com/ninja33)
-    - `None`不做处理
-    - `list`使用字典映射来词形还原。字典来自[这里](https://github.com/michmech/lemmatization-lists/blob/master/lemmatization-en.txt)，里面共有条41760词条，如果文章中的单词不在此字典中，保持原样
-    - `NLTK`
-    - `both`先使用字典，后使用`NLTK`
+  - `None`不做处理
+  - `list`使用字典映射来词形还原。字典来自[这里](https://github.com/michmech/lemmatization-lists/blob/master/lemmatization-en.txt)，里面共有条41760词条，如果文章中的单词不在此字典中，保持原样
+  - `NLTK`
+  - `both`先使用字典，后使用`NLTK`
 
 ### 2018年09月28日 2.0.1
 
@@ -67,10 +73,8 @@
 - 鸽了一个暑假，接下来更新可能稳定一点
 - 这个版本我只做了简单测试，所以记得备份自己的`old.txt`，其他应该不会造成什么损失
 - 维护一个QQ群，万一有人用呢，也满足一下我的虚荣心，更新可能快点。737389550 
-<div align=center>
-<img src="https://i.loli.net/2018/09/29/5baedf2a2bd6d.jpg" width = "100"/>
-</div>
 
+<div align=center><img src="https://i.loli.net/2018/09/29/5baedf2a2bd6d.jpg" width = "100"/></div>
 
 ### 2018年05月16日 1.0.1
 
