@@ -6,6 +6,10 @@ import time
 import safe_IO
 from Article import Article
 
+try:
+    os.mkdir('./log/')
+except Exception as e:
+    pass
 logging.config.fileConfig('./logging.config')
 logger = logging.getLogger('FAIDN')
 
