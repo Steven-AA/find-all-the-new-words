@@ -9,16 +9,20 @@
 
 ## 交流
 
-- 维护一个QQ群，万一有人用呢，也满足一下我的虚荣心，更新可能快点。737389550 
+- 维护一个QQ群，万一有人用呢，也满足一下我的虚荣心，更新可能快点。737389550
 
 <div align=center><img src="https://i.loli.net/2018/09/29/5baedf2a2bd6d.jpg" width = "100"/></div>
 
 ## 已知bug
 
 - exe 等测试一段时间没什么问题就打包
+- `config` 和`new.txt`相关的命令行参数暂不可用
 
 ## 最近的更新
 
+- 修复`new.txt`反复覆盖的bug
+- 增加上一次运行时的生成的`new.txt`是否保留的选择
+- 修复`articles`中的文件没有自动移动到`old_articles`的bug
 - 使用`logging`替代`print`
 - 增加`/log/FAIDN.log`文件
 - 词形还原，提供四种模式，修改`FAIDN.config`中的`LEMMATIZATION_MODE`来修改，目前支持四种模式。这里需要感谢[@ninja33](https://github.com/ninja33)
@@ -54,6 +58,12 @@
 
 ## 更新
 
+### 2018年11月16日 2.0.4
+
+- 修复`new.txt`反复覆盖的bug
+- 增加上一次运行时的生成的`new.txt`是否保留的选择
+- 修复`articles`中的文件没有自动移动到`old_articles`的bug
+
 ### 2018年10月10日 2.0.3
 
 - 使用`logging`替代`print`
@@ -72,7 +82,7 @@
 - 重构代码，我也不知道是重构好了还是重构差了。。。
 - 鸽了一个暑假，接下来更新可能稳定一点
 - 这个版本我只做了简单测试，所以记得备份自己的`old.txt`，其他应该不会造成什么损失
-- 维护一个QQ群，万一有人用呢，也满足一下我的虚荣心，更新可能快点。737389550 
+- 维护一个QQ群，万一有人用呢，也满足一下我的虚荣心，更新可能快点。737389550
 
 <div align=center><img src="https://i.loli.net/2018/09/29/5baedf2a2bd6d.jpg" width = "100"/></div>
 

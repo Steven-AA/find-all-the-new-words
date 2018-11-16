@@ -3,6 +3,7 @@ import logging
 import logging.config
 import msvcrt
 import os
+import shutil
 
 import click
 
@@ -19,6 +20,41 @@ strange_key = ['\x00']
     #         names = os.listdir(path)
     #     return names
 logger = logging.getLogger('FAIDN.safe_IO')
+
+def mv_file(path1, path2):
+    try:
+        shutil.move(path1,path2)
+    except Exception as e:
+        logger.error(e)
+        logger.info("move article failed")
+
+def try_make_dir(path):
+    try:
+        os.mkdir(path)
+    except Exception as e:
+        logger.debug(e)
+
+def check_output_file(file_path):
+    MESSAGE = file_path+' exists, Y to overwrite N to append'
+    if os.path.exists(file_path) and click.confirm(MESSAGE, default=False):
+        os.remove(file_path)
+        logger.info(file_path+' deleted')
+
+def check_flag(mode):
+    FLAG = None
+    if mode is not None:
+        try:
+            FLAG = int(mode)
+        except Exception as e:
+            logger.debug(e)
+            FLAG = None
+    else:
+        FLAG = None
+    while FLAG != 1 and FLAG != 2:
+        logger.info('\tprint 1 to build model\n\t\t\tprint 2 to find model\n\t\t\t \
+        here to get some help:https://zhuanlan.zhihu.com/p/25003457\n')
+        FLAG = int(safe_get_input(['1','2']))
+    return FLAG
 
 def my_input(output):
     '''
@@ -107,10 +143,12 @@ def load_json(path):
         'NEW_WORDS_PATH': 'new.txt',
         'OLD_WORDS_PATH': 'old.txt',
         'ARTICLES_PATH': 'articles/',
+        'OLD_ARTICLES_PATH':'old_articles/',
         'NEW_WORDS_EACH_ARTICLE_PATH': 'new_words_of_each_article/',
         'LEMMATIZATION_PATH': 'lemmatization-en.txt',
         'LEMMATIZATION_MODE': 'list',
         'LEMMATIZATION_MODE_AVAILABLE':"['None,'list','NLTK','both']",
+        'SPLIT_EVERY':'100',
     }
     logger.info('Loading config from ' + path + '...')
     try:
