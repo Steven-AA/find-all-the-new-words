@@ -13,7 +13,7 @@ try:
 except Exception as e:
     pass
 logging.config.fileConfig('./logging.config')
-logger = logging.getLogger('FAIDN')
+logger = logging.getLogger('FAIDK')
 
 def main():
     parser = argparse.ArgumentParser()
@@ -24,7 +24,7 @@ def main():
     parser.add_argument('--no-config', help='not use local config',
                         dest='config', action='store_false')
     args = parser.parse_args()
-    CONFIG = safe_IO.load_json('./FAIDN.config')
+    CONFIG = safe_IO.load_json('./FAIDK.config')
     FLAG = safe_IO.check_flag(args.mode)
     safe_IO.check_output_file(CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_PATH'])
     NEM_WORDS_ALL = set()

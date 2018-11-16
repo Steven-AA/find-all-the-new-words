@@ -19,7 +19,7 @@ strange_key = ['\x00']
     #         os.mkdir(config['MAIN_PATH'] + config['ARTICLES_PATH'])
     #         names = os.listdir(path)
     #     return names
-logger = logging.getLogger('FAIDN.safe_IO')
+logger = logging.getLogger('FAIDK.safe_IO')
 
 def mv_file(path1, path2):
     try:
@@ -138,7 +138,7 @@ def if_expect_key(key, expect_key):
 
 def load_json(path):
     config = {
-        'CONFIG_PATH': 'FAIDN.config',
+        'CONFIG_PATH': 'FAIDK.config',
         'MAIN_PATH': './',
         'NEW_WORDS_PATH': 'new.txt',
         'OLD_WORDS_PATH': 'old.txt',

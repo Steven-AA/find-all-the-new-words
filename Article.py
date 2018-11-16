@@ -5,7 +5,7 @@ from nltk.stem import WordNetLemmatizer
 
 from safe_IO import *
 
-logger = logging.getLogger('FAIDN.Article')
+logger = logging.getLogger('FAIDK.Article')
 
 class Article(object):
     def __init__(self, config, path):
