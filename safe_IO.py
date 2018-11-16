@@ -1,11 +1,16 @@
 import json
 import logging
 import logging.config
-import msvcrt
 import os
 import shutil
 
 import click
+
+try:
+    from msvcrt import getch
+except:
+    from getch import getch
+
 
 strange_key = ['\x00']
 
@@ -62,9 +67,9 @@ def my_input(output):
     '''
     logger.info(output)
     choise = ['1', '2']
-    judge = msvcrt.getch().decode('utf-8')
+    judge = getch().decode('utf-8')
     while judge == '\x00':
-        judge = msvcrt.getch().decode('utf-8')
+        judge = getch().decode('utf-8')
     if judge not in choise:
         logger.info('Input error! Plz try again:')
         judge = my_input(output)
@@ -118,7 +123,7 @@ def read_article_from_file(path):
 
 def input_without_strange_key():
     while True:
-        key = msvcrt.getch().decode('utf-8')
+        key = getch().decode('utf-8')
         if key not in strange_key:
             break
     return key
