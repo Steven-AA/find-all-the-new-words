@@ -1,5 +1,8 @@
 # find-all-the-new-words
 
+[![GitHub issues](https://img.shields.io/github/issues/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/issues)  [![GitHub forks](https://img.shields.io/github/forks/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/network)  [![GitHub stars](https://img.shields.io/github/stars/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/stargazers)  [![GitHub license](https://img.shields.io/github/license/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/blob/master/LICENSE) [![codecov](https://codecov.io/gh/Steven-AA/find-all-the-new-words/branch/master/graph/badge.svg)](https://codecov.io/gh/Steven-AA/find-all-the-new-words)
+
+
 - 找出文章中的生词（配合anki使用）
 - 示例 [先背生词，再看文章 FAIDK v1.0.0](https://zhuanlan.zhihu.com/p/25003457)
 
@@ -26,20 +29,18 @@
 - 修复`articles`中的文件没有自动移动到`old_articles`的bug
 - 使用`logging`替代`print`
 - 增加`/log/FAIDN.log`文件
-- 词形还原，提供四种模式，修改`FAIDN.config`中的`LEMMATIZATION_MODE`来修改，目前支持四种模式。这里需要感谢[@ninja33](https://github.com/ninja33)
-  - `None`不做处理
-  - `list`使用字典映射来词形还原。字典来自[这里](https://github.com/michmech/lemmatization-lists/blob/master/lemmatization-en.txt)，里面共有条41760词条，如果文章中的单词不在此字典中，保持原样
-  - `NLTK`
-  - `both`先使用字典，后使用`NLTK`
 
 ## 即将到来的新 Feature 预告
 
-- [ ] 中断恢复
-- [ ] 自定义按键
+**说明**:中断恢复、过多生词自动切割这两个功能其实都是为了解决中途退出保存进度的问题，因此准备中途手动退出保存来解决这些问题
+
 - [x] ~~词形还原~~
-- [ ] 文章含有过多生词自动切割
+- [ ] 手动退出
+- [ ] 自定义按键
 - [ ] 自定义 config 路径
 - [ ] 多 config 选择
+- [ ] ~~中断恢复~~
+- [ ] ~~文章含有过多生词自动切割~~
 
 ## 使用
 
@@ -61,7 +62,10 @@
 
 ### 2018年
 
+- 增加buget
+- 增加`pytest`并连接`CodeCov`
 - 更正所有`FAIDN`为`FAIDK`:D
+- 修复部分python3版本没有`decode`的问题
 
 ### 2018年11月16日 2.0.4
 
