@@ -36,7 +36,7 @@ def main():
     safe_IO.try_make_dir(CONFIG['MAIN_PATH'] + CONFIG['OLD_ARTICLES_PATH'])
     for file in FILE_NAMES:
         path = CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'] + file
-        article = Article(CONFIG,path)
+        article = Article(CONFIG,file)
         if FLAG=='1':
             new_words, KNOWN_WORDS = article.learn()
             if new_words:

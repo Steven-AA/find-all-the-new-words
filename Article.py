@@ -8,16 +8,17 @@ from safe_IO import *
 logger = logging.getLogger('FAIDK.Article')
 
 class Article(object):
-    def __init__(self, config, path):
+    def __init__(self, config, file):
+        self.name = file
         self.config = config
-        # self.config = IO.load_json(self.config[CONFIG_PATH])
-        self.file_path = path
+        self.file_path = config['MAIN_PATH'] + config['ARTICLES_PATH'] + file
         self.fix_dic = load_lemmatization_list_to_dic(self.config['LEMMATIZATION_MODE'])
         OLD_WORDS_PATH = self.config['MAIN_PATH'] + self.config['OLD_WORDS_PATH']
         self.known_words = self.split_the_article(self.read_old_words(OLD_WORDS_PATH))
         self.article = read_article_from_file(self.file_path)
         self.words = self.split_the_article(self.article,self.file_path)
         self.new_words = self.read_new_words()
+        self.num = len(self.new_words)
         
 
     def read_old_words(self,path):
@@ -92,11 +93,18 @@ class Article(object):
         '''
         learn new words & build
         '''
-        num = len(self.new_words)
         logger.info('if you know the word 1, else print 2')
         for word in self.new_words:
-            num -= 1
-            judge = my_input(word+'('+str(num)+' Left)\n')
+            self.num -= 1
+            judge = my_input(word+'('+str(self.num)+' Left)')
+            if judge == 'q':
+                self.user_exit()
+                break
             if judge == '1':
                 self.known_words.add(word)
         return self.new_words - self.known_words, self.known_words
+
+    def user_exit(self):
+        write_each_new_words(self.config['ARTICLES_PATH'],'l_'+self.name,list(self.new_words)[-self.num-1:])
+        logger.debug('writing left words')
+        logger.debug(list(self.new_words)[-self.num-1:])

@@ -33,6 +33,7 @@ def getch():
     temp = _getch()
     if type(temp) == bytes:
         temp = temp.decode('utf-8')
+    print(temp)
     return temp
 
 def mv_file(path1, path2):
