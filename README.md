@@ -1,6 +1,6 @@
 # find-all-the-new-words
 
-[![GitHub issues](https://img.shields.io/github/issues/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/issues)  [![GitHub forks](https://img.shields.io/github/forks/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/network)  [![GitHub stars](https://img.shields.io/github/stars/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/stargazers)  [![GitHub license](https://img.shields.io/github/license/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/blob/master/LICENSE) [![codecov](https://codecov.io/gh/Steven-AA/find-all-the-new-words/branch/master/graph/badge.svg)](https://codecov.io/gh/Steven-AA/find-all-the-new-words)
+[![GitHub issues](https://img.shields.io/github/issues/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/issues)  [![GitHub forks](https://img.shields.io/github/forks/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/network)  [![GitHub stars](https://img.shields.io/github/stars/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/stargazers)  [![GitHub license](https://img.shields.io/github/license/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/blob/master/LICENSE) [![codecov](https://codecov.io/gh/Steven-AA/find-all-the-new-words/branch/master/graph/badge.svg)](https://codecov.io/gh/Steven-AA/find-all-the-new-words)  [![GitHub All Releases](https://img.shields.io/github/downloads/Steven-AA/find-all-the-new-words/total.svg)](https://github.com/Steven-AA/find-all-the-new-words)
 
 
 - 找出文章中的生词（配合anki使用）
@@ -32,6 +32,21 @@
 
 ## 即将到来的新 Feature 预告
 
+![https://i.loli.net/2018/11/21/5bf55cf6c194b.png](https://i.loli.net/2018/11/21/5bf55cf6c194b.png)
+
+```mermaid
+gantt
+title 甘特图
+dateFormat  YYYY-MM-DD
+section FAIDN
+开发           :active,   a, 2018-11-22, 2018-12-31
+    主动退出  :active,   a_1, 2018-11-22, 10d
+    自定义按键:          a_2, after  a_1, 10d 
+    自定义config路径:          after  a_2, 10d 
+测试覆盖      :           b, 2018-12-01, 2018-12-31
+文档           :           c, 2018-12-15, 2019-01-15
+```
+
 **说明**:中断恢复、过多生词自动切割这两个功能其实都是为了解决中途退出保存进度的问题，因此准备中途手动退出保存来解决这些问题
 
 - [x] ~~词形还原~~
@@ -62,7 +77,7 @@
 
 ### 2018年
 
-- 增加buget
+- 增加budge
 - 增加`pytest`并连接`CodeCov`
 - 更正所有`FAIDN`为`FAIDK`:D
 - 修复部分python3版本没有`decode`的问题

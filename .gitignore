@@ -11,3 +11,5 @@ test.txt
 new.txt
 /log/FAIDK.log
 test_*
+.pytest_cache
+.coverage
