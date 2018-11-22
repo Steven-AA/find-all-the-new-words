@@ -26,6 +26,9 @@ def main():
     args = parser.parse_args()
     CONFIG = safe_IO.load_json('./FAIDK.config')
     FLAG = safe_IO.check_flag(args.mode)
+    if FLAG=='q':
+        logger.info('user exit')
+        return
     safe_IO.check_output_file(CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_PATH'])
     NEM_WORDS_ALL = set()
     FILE_NAMES = os.listdir(CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'])
@@ -34,7 +37,7 @@ def main():
     for file in FILE_NAMES:
         path = CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'] + file
         article = Article(CONFIG,path)
-        if FLAG==1:
+        if FLAG=='1':
             new_words, KNOWN_WORDS = article.learn()
             if new_words:
                 logger.info('new words:')

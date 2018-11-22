@@ -6,10 +6,6 @@ import shutil
 
 import click
 
-try:
-    from msvcrt import getch
-except:
-    from getch import getch
 
 
 strange_key = ['\x00']
@@ -25,6 +21,19 @@ strange_key = ['\x00']
     #         names = os.listdir(path)
     #     return names
 logger = logging.getLogger('FAIDK.safe_IO')
+
+def getch():
+    '''
+    跨平台getch
+    '''
+    try:
+        from msvcrt import getch as _getch
+    except:
+        from getch import getch as _getch
+    temp = _getch()
+    if type(temp) == bytes:
+        temp = temp.decode('utf-8')
+    return temp
 
 def mv_file(path1, path2):
     try:
@@ -49,16 +58,18 @@ def check_flag(mode):
     FLAG = None
     if mode is not None:
         try:
-            FLAG = int(mode)
+            FLAG = mode
         except Exception as e:
             logger.debug(e)
             FLAG = None
     else:
         FLAG = None
-    while FLAG != 1 and FLAG != 2:
-        logger.info('\tprint 1 to build model\n\t\t\tprint 2 to find model\n\t\t\t \
+    choice = ['1','2','q']
+    while FLAG not in choice:
+        logger.info('\tprint 1 to build model\n\t\t\tprint 2 to find model\n\t\t\tprint q to exit\n\t\t\t \
         here to get some help:https://zhuanlan.zhihu.com/p/25003457\n')
-        FLAG = int(safe_get_input(['1','2']))
+        FLAG = safe_get_input(choice)
+        logger.debug('check_flag:'+FLAG)
     return FLAG
 
 def my_input(output):
@@ -66,10 +77,10 @@ def my_input(output):
     input
     '''
     logger.info(output)
-    choise = ['1', '2']
-    judge = getch().decode('utf-8')
+    choise = ['1', '2', 'q']
+    judge = getch()
     while judge == '\x00':
-        judge = getch().decode('utf-8')
+        judge = getch()
     if judge not in choise:
         logger.info('Input error! Plz try again:')
         judge = my_input(output)
@@ -123,7 +134,7 @@ def read_article_from_file(path):
 
 def input_without_strange_key():
     while True:
-        key = getch().decode('utf-8')
+        key = getch()
         if key not in strange_key:
             break
     return key

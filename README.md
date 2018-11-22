@@ -34,19 +34,6 @@
 
 ![https://i.loli.net/2018/11/21/5bf55cf6c194b.png](https://i.loli.net/2018/11/21/5bf55cf6c194b.png)
 
-```mermaid
-gantt
-title 甘特图
-dateFormat  YYYY-MM-DD
-section FAIDN
-开发           :active,   a, 2018-11-22, 2018-12-31
-    主动退出  :active,   a_1, 2018-11-22, 10d
-    自定义按键:          a_2, after  a_1, 10d 
-    自定义config路径:          after  a_2, 10d 
-测试覆盖      :           b, 2018-12-01, 2018-12-31
-文档           :           c, 2018-12-15, 2019-01-15
-```
-
 **说明**:中断恢复、过多生词自动切割这两个功能其实都是为了解决中途退出保存进度的问题，因此准备中途手动退出保存来解决这些问题
 
 - [x] ~~词形还原~~
@@ -77,10 +64,11 @@ section FAIDN
 
 ### 2018年
 
+- 修复`getch`无法跨平台问题
 - 增加budge
 - 增加`pytest`并连接`CodeCov`
 - 更正所有`FAIDN`为`FAIDK`:D
-- 修复部分python3版本没有`decode`的问题
+- ~~修复部分python3版本没有`decode`的问题~~(`linux`平台下`getch`返回值为`str`，因此没有`decode`)
 
 ### 2018年11月16日 2.0.4
 
