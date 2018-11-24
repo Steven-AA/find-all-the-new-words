@@ -7,20 +7,23 @@ import shutil
 import click
 
 
-
 strange_key = ['\x00']
 
-    # def get_name(self,path):
-    #     '''
-    #     get the file Name
-    #     '''
-    #     try:
-    #         names = os.listdir(path)
-    #     except:
-    #         os.mkdir(config['MAIN_PATH'] + config['ARTICLES_PATH'])
-    #         names = os.listdir(path)
-    #     return names
+
 logger = logging.getLogger('FAIDK.safe_IO')
+
+
+def get_name(path):
+    '''
+    get the file Name
+    '''
+    try:
+        names = os.listdir(path)
+    except:
+        os.mkdir(config['MAIN_PATH'] + config['ARTICLES_PATH'])
+        names = os.listdir(path)
+    return names
+
 
 def getch():
     '''
@@ -36,12 +39,14 @@ def getch():
     print(temp)
     return temp
 
+
 def mv_file(path1, path2):
     try:
-        shutil.move(path1,path2)
+        shutil.move(path1, path2)
     except Exception as e:
         logger.error(e)
         logger.info("move article failed")
+
 
 def try_make_dir(path):
     try:
@@ -49,11 +54,13 @@ def try_make_dir(path):
     except Exception as e:
         logger.debug(e)
 
+
 def check_output_file(file_path):
     MESSAGE = file_path+' exists, Y to overwrite N to append'
     if os.path.exists(file_path) and click.confirm(MESSAGE, default=False):
         os.remove(file_path)
         logger.info(file_path+' deleted')
+
 
 def check_flag(mode):
     FLAG = None
@@ -65,13 +72,14 @@ def check_flag(mode):
             FLAG = None
     else:
         FLAG = None
-    choice = ['1','2','q']
+    choice = ['1', '2', 'q']
     while FLAG not in choice:
         logger.info('\tprint 1 to build model\n\t\t\tprint 2 to find model\n\t\t\tprint q to exit\n\t\t\t \
         here to get some help:https://zhuanlan.zhihu.com/p/25003457\n')
         FLAG = safe_get_input(choice)
         logger.debug('check_flag:'+FLAG)
     return FLAG
+
 
 def my_input(output):
     '''
@@ -88,6 +96,7 @@ def my_input(output):
         return judge
     return judge
 
+
 def write_each_new_words(path, name, new_words):
     '''
     write new words by each article
@@ -100,9 +109,10 @@ def write_each_new_words(path, name, new_words):
     try:
         with open(path + name, 'w') as f_words:
             f_words.write('\n'.join(new_words))
-        logger.info('write new word to file \'' +path + name + '\'')
+        logger.info('write new word to file \'' + path + name + '\'')
     except:
-        logger.info('failed to creat file of \'' +path + name + '\'')
+        logger.info('failed to creat file of \'' + path + name + '\'')
+
 
 def read_known_words():
     '''
@@ -113,13 +123,14 @@ def read_known_words():
             all_the_words = f.read()
     except:
         logger.info('\'' + config['MAIN_PATH'] +
-            config['OLD_WORDS_PATH'] + '\' missing......')
+                    config['OLD_WORDS_PATH'] + '\' missing......')
         all_the_words = ""
     known_words = split_the_article(all_the_words)
     logger.info(known_words)
     num = len(known_words)
     logger.info('There are ' + str(num) + ' words I have known')
     return known_words
+
 
 def read_article_from_file(path):
     '''
@@ -133,12 +144,14 @@ def read_article_from_file(path):
             article = f_article.read()
     return article
 
+
 def input_without_strange_key():
     while True:
         key = getch()
         if key not in strange_key:
             break
     return key
+
 
 def safe_get_input(expect_key, Error_msg='Input Error, plz retry.', output_msg='plz input:\n'):
     while True:
@@ -148,10 +161,12 @@ def safe_get_input(expect_key, Error_msg='Input Error, plz retry.', output_msg='
             return key
         logger.info(Error_msg)
 
+
 def if_expect_key(key, expect_key):
-    if key not in  expect_key:
-            return False
+    if key not in expect_key:
+        return False
     return True
+
 
 def load_json(path):
     config = {
@@ -160,12 +175,13 @@ def load_json(path):
         'NEW_WORDS_PATH': 'new.txt',
         'OLD_WORDS_PATH': 'old.txt',
         'ARTICLES_PATH': 'articles/',
-        'OLD_ARTICLES_PATH':'old_articles/',
+        'OLD_ARTICLES_PATH': 'old_articles/',
         'NEW_WORDS_EACH_ARTICLE_PATH': 'new_words_of_each_article/',
         'LEMMATIZATION_PATH': 'lemmatization-en.txt',
         'LEMMATIZATION_MODE': 'list',
-        'LEMMATIZATION_MODE_AVAILABLE':"['None,'list','NLTK','both']",
-        'SPLIT_EVERY':'100',
+        'LEMMATIZATION_MODE_AVAILABLE': "['None,'list','NLTK','both']",
+        'SPLIT_EVERY': '100',
+        'SPECIAL_PUNCTUATION': ';:；：‘’“”\'\"【】\[\]@#$%^&*()！@#￥%……&*（）',
     }
     logger.info('Loading config from ' + path + '...')
     try:
@@ -177,7 +193,7 @@ def load_json(path):
     except Exception as e:
         logger.warning(e)
         if click.confirm('Loading config failed\n Write default config to ' +
-            config['MAIN_PATH'] + '?',default=True):
+                         config['MAIN_PATH'] + '?', default=True):
             json.dump(config, open(config['CONFIG_PATH'], 'w'), indent=4)
             return config
         if click.confirm('Use default config?', default=True):
@@ -186,14 +202,15 @@ def load_json(path):
             return config
         exit()
 
+
 def load_lemmatization_list_to_dic(mode):
-    if mode in ['list','both']:
+    if mode in ['list', 'both']:
         logger.info('loading dic')
         import pandas as pd
-        dic_data = pd.read_csv('./lemmatization-en.txt',sep='\t',header=None)
-        value = list(dic_data.iloc[:,0])
-        key = list(dic_data.iloc[:,1])
-        fix_dic = dict(zip(key,value))
+        dic_data = pd.read_csv('./lemmatization-en.txt', sep='\t', header=None)
+        value = list(dic_data.iloc[:, 0])
+        key = list(dic_data.iloc[:, 1])
+        fix_dic = dict(zip(key, value))
         logger.info('Done')
         return fix_dic
     return None

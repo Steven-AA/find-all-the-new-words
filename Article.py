@@ -7,21 +7,24 @@ from safe_IO import *
 
 logger = logging.getLogger('FAIDK.Article')
 
+
 class Article(object):
     def __init__(self, config, file):
         self.name = file
         self.config = config
         self.file_path = config['MAIN_PATH'] + config['ARTICLES_PATH'] + file
-        self.fix_dic = load_lemmatization_list_to_dic(self.config['LEMMATIZATION_MODE'])
-        OLD_WORDS_PATH = self.config['MAIN_PATH'] + self.config['OLD_WORDS_PATH']
-        self.known_words = self.split_the_article(self.read_old_words(OLD_WORDS_PATH))
+        self.fix_dic = load_lemmatization_list_to_dic(
+            self.config['LEMMATIZATION_MODE'])
+        OLD_WORDS_PATH = self.config['MAIN_PATH'] + \
+            self.config['OLD_WORDS_PATH']
+        self.known_words = self.split_the_article(
+            self.read_old_words(OLD_WORDS_PATH))
         self.article = read_article_from_file(self.file_path)
-        self.words = self.split_the_article(self.article,self.file_path)
+        self.words = self.split_the_article(self.article, self.file_path)
         self.new_words = self.read_new_words()
         self.num = len(self.new_words)
-        
 
-    def read_old_words(self,path):
+    def read_old_words(self, path):
         try:
             return read_article_from_file(path)
         except:
@@ -35,32 +38,35 @@ class Article(object):
         p_forword = re.compile('[a-z,A-Z,\',‘]')
         word = p_forword.findall(word)
         real_word = ''.join(word).lower()
-        if self.config['LEMMATIZATION_MODE'] in ['list','both']:
+        if self.config['LEMMATIZATION_MODE'] in ['list', 'both']:
             try:
                 real_word = self.fix_dic[real_word]
             except Exception as e:
                 logger.debug(e)
                 pass
-        if self.config['LEMMATIZATION_MODE'] in ['NLTK','both']:
+        if self.config['LEMMATIZATION_MODE'] in ['NLTK', 'both']:
             wordnet_lemmatizer = WordNetLemmatizer()
             real_word = wordnet_lemmatizer.lemmatize(real_word)
         return real_word
 
-    def split_the_article(self, Article,name=None):
+    def split_the_article(self, Article, name=None):
         '''
         split the article
         '''
-        sep = re.compile('[\r\n., ]')
+        sep = re.compile('[ \r\n.,'+self.config['SPECIAL_PUNCTUATION']+' ]')
+        logger.debug(sep)
         words = re.split(sep, Article)
         filcts = (self.real_word(word) for word in words)
         set_of_words = set(filcts)
-        if name==None:
+        if name == None:
             pass
         else:
-            logger.info('there are {} words in {}'.format(len(set_of_words), name))
+            logger.info('there are {} words in {}'.format(
+                len(set_of_words), name))
+            logger.debug(set_of_words)
         return set_of_words
 
-    def read_known_words(self,path):
+    def read_known_words(self, path):
         '''
         load the word have known
         '''
@@ -70,9 +76,11 @@ class Article(object):
         except:
             logger.info('\'' + path + '\' missing......')
             all_the_words = ""
-        known_words = split_the_article(all_the_words,self.config['OLD_WORDS_PATH'])
+        known_words = split_the_article(
+            all_the_words, self.config['OLD_WORDS_PATH'])
         num = len(known_words)
-        logger.info('There are {} words in {}'.format(str(num),self.config['OLD_WORDS_PATH']))
+        logger.info('There are {} words in {}'.format(
+            str(num), self.config['OLD_WORDS_PATH']))
         return known_words
 
     def read_new_words(self):
@@ -105,6 +113,7 @@ class Article(object):
         return self.new_words - self.known_words, self.known_words
 
     def user_exit(self):
-        write_each_new_words(self.config['ARTICLES_PATH'],'l_'+self.name,list(self.new_words)[-self.num-1:])
+        write_each_new_words(
+            self.config['ARTICLES_PATH'], 'l_'+self.name, list(self.new_words)[-self.num-1:])
         logger.debug('writing left words')
         logger.debug(list(self.new_words)[-self.num-1:])
