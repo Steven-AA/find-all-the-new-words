@@ -81,12 +81,11 @@ def check_flag(mode):
     return FLAG
 
 
-def my_input(output):
+def my_input(output, choise=['1','2','q']):
     '''
     input
     '''
     logger.info(output)
-    choise = ['1', '2', 'q']
     judge = getch()
     while judge == '\x00':
         judge = getch()
@@ -97,7 +96,7 @@ def my_input(output):
     return judge
 
 
-def write_each_new_words(path, name, new_words):
+def write_each_words(path, name, new_words):
     '''
     write new words by each article
     '''
@@ -109,7 +108,7 @@ def write_each_new_words(path, name, new_words):
     try:
         with open(path + name, 'w') as f_words:
             f_words.write('\n'.join(new_words))
-        logger.info('write new word to file \'' + path + name + '\'')
+        logger.info('write words to file \'' + path + name + '\'')
     except:
         logger.info('failed to creat file of \'' + path + name + '\'')
 
@@ -182,14 +181,15 @@ def load_json(path):
         'LEMMATIZATION_MODE_AVAILABLE': "['None,'list','NLTK','both']",
         'SPLIT_EVERY': '100',
         'SPECIAL_PUNCTUATION': ';:；：‘’“”\'\"【】\[\]@#$%^&*()！@#￥%……&*（）',
+        'KEY_FOR_KNOW': '1',
+        'KEY_FOR_NOT': '2',
+        'KEY_FOR_QUIT': 'q',
     }
     logger.info('Loading config from ' + path + '...')
     try:
         local_config = json.load(open(path))
         for key in config:
             local_config[key]
-        logger.info('Using local config')
-        return local_config
     except Exception as e:
         logger.warning(e)
         if click.confirm('Loading config failed\n Write default config to ' +
@@ -201,6 +201,9 @@ def load_json(path):
             logger.info('Using default config')
             return config
         exit()
+    if local_config['CONFIG_PATH'] != path:
+        config = load_json(local_config['CONFIG_PATH'])
+    return local_config
 
 
 def load_lemmatization_list_to_dic(mode):

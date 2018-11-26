@@ -32,33 +32,11 @@ def main():
         return
     safe_IO.check_output_file(CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_PATH'])
     NEM_WORDS_ALL = set()
-    FILE_NAMES = safe_IO.get_name(CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'])
-    NEW_WORDS_EACH_ARTICLE_PATH = CONFIG['MAIN_PATH'] + \
-        CONFIG['NEW_WORDS_EACH_ARTICLE_PATH']
+    FILE_NAMES = safe_IO.get_name(
+        CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'])
     safe_IO.try_make_dir(CONFIG['MAIN_PATH'] + CONFIG['OLD_ARTICLES_PATH'])
     for file in FILE_NAMES:
-        path = CONFIG['MAIN_PATH'] + CONFIG['ARTICLES_PATH'] + file
-        article = Article(CONFIG, file)
-        if FLAG == '1':
-            new_words, KNOWN_WORDS = article.learn()
-            if new_words:
-                logger.info('new words:')
-                logger.info(new_words)
-                safe_IO.write_each_new_words(
-                    NEW_WORDS_EACH_ARTICLE_PATH, file, new_words)
-                NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
-        else:
-            new_words = article.new_words
-            KNOWN_WORDS = article.known_words
-            NEM_WORDS_ALL = NEM_WORDS_ALL | set(new_words)
-            safe_IO.write_each_new_words(
-                NEW_WORDS_EACH_ARTICLE_PATH, file, new_words)
-        safe_IO.mv_file(path, CONFIG['MAIN_PATH'] +
-                        CONFIG['OLD_ARTICLES_PATH'])
-        with open(CONFIG['MAIN_PATH'] + CONFIG['OLD_WORDS_PATH'], 'w') as old:
-            old.write('\n'.join(KNOWN_WORDS))
-        with open(CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_PATH'], 'a') as new:
-            new.write('\n'.join(NEM_WORDS_ALL))
+        article = Article(CONFIG, file, FLAG)
 
 
 if __name__ == '__main__':

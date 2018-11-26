@@ -3,13 +3,14 @@ import re
 
 from nltk.stem import WordNetLemmatizer
 
+import safe_IO
 from safe_IO import *
 
 logger = logging.getLogger('FAIDK.Article')
 
 
 class Article(object):
-    def __init__(self, config, file):
+    def __init__(self, config, file, FLAG):
         self.name = file
         self.config = config
         self.file_path = config['MAIN_PATH'] + config['ARTICLES_PATH'] + file
@@ -23,6 +24,16 @@ class Article(object):
         self.words = self.split_the_article(self.article, self.file_path)
         self.new_words = self.read_new_words()
         self.num = len(self.new_words)
+        self.keys = self.load_keys()
+        if FLAG == '1':
+            self.learn()
+        self.finish()
+
+    def load_keys(self):
+        f = self.config
+        keys = [f['KEY_FOR_KNOW'], f['KEY_FOR_NOT'], f['KEY_FOR_QUIT']]
+        logger.debug(keys)
+        return keys
 
     def read_old_words(self, path):
         try:
@@ -36,8 +47,8 @@ class Article(object):
         find the real word
         '''
         p_forword = re.compile('[a-z,A-Z,\',‘]')
-        word = p_forword.findall(word)
-        real_word = ''.join(word).lower()
+        word_s = p_forword.findall(word)
+        real_word = ''.join(word_s).lower()
         if self.config['LEMMATIZATION_MODE'] in ['list', 'both']:
             try:
                 real_word = self.fix_dic[real_word]
@@ -47,6 +58,7 @@ class Article(object):
         if self.config['LEMMATIZATION_MODE'] in ['NLTK', 'both']:
             wordnet_lemmatizer = WordNetLemmatizer()
             real_word = wordnet_lemmatizer.lemmatize(real_word)
+        logger.debug(word+'-->'+real_word)
         return real_word
 
     def split_the_article(self, Article, name=None):
@@ -101,19 +113,37 @@ class Article(object):
         '''
         learn new words & build
         '''
-        logger.info('if you know the word 1, else print 2')
+        logger.info('if you know the word {}, else print {}'.format(self.config['KEY_FOR_KNOW'],self.config['KEY_FOR_NOT']))
         for word in self.new_words:
             self.num -= 1
-            judge = my_input(word+'('+str(self.num)+' Left)')
-            if judge == 'q':
+            judge = my_input(word+'('+str(self.num)+' Left)',self.keys)
+            if judge == self.config['KEY_FOR_QUIT']:
                 self.user_exit()
                 break
-            if judge == '1':
+            if judge == self.config['KEY_FOR_KNOW']:
                 self.known_words.add(word)
-        return self.new_words - self.known_words, self.known_words
+        self.new_words = self.new_words - self.known_words
+        if self.new_words:
+            logger.info('new words:')
+            logger.info(new_words)
 
     def user_exit(self):
-        write_each_new_words(
+        write_each_words(
             self.config['ARTICLES_PATH'], 'l_'+self.name, list(self.new_words)[-self.num-1:])
         logger.debug('writing left words')
         logger.debug(list(self.new_words)[-self.num-1:])
+        self.finish()
+        exit()
+
+    def finish(self):
+        CONFIG = self.config
+        NEW_WORDS_EACH_ARTICLE_PATH = CONFIG['MAIN_PATH'] + \
+            CONFIG['NEW_WORDS_EACH_ARTICLE_PATH']
+        safe_IO.mv_file(self.file_path, CONFIG['MAIN_PATH'] +
+                        CONFIG['OLD_ARTICLES_PATH'])
+        safe_IO.write_each_words(
+            NEW_WORDS_EACH_ARTICLE_PATH, self.name, self.new_words)
+        with open(CONFIG['MAIN_PATH'] + CONFIG['OLD_WORDS_PATH'], 'w') as old:
+            old.write('\n'.join(self.known_words))
+        with open(CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_PATH'], 'a') as new:
+            new.write('\n'.join(self.new_words))
