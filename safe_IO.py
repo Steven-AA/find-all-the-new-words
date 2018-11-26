@@ -20,7 +20,7 @@ def get_name(path):
     try:
         names = os.listdir(path)
     except:
-        os.mkdir(config['MAIN_PATH'] + config['ARTICLES_PATH'])
+        os.mkdir(path)
         names = os.listdir(path)
     return names
 
