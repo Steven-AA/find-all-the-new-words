@@ -180,7 +180,7 @@ def load_json(path):
         'LEMMATIZATION_MODE': 'list',
         'LEMMATIZATION_MODE_AVAILABLE': "['None,'list','NLTK','both']",
         'SPLIT_EVERY': '100',
-        'SPECIAL_PUNCTUATION': ';:；：‘’“”\'\"【】\[\]@#$%^&*()！@#￥%……&*（）',
+        'SPECIAL_PUNCTUATION': ';:；：‘’“”\'\"【】\[\]@#$%^&*()！@#￥%……&*（）\-—',
         'KEY_FOR_KNOW': '1',
         'KEY_FOR_NOT': '2',
         'KEY_FOR_QUIT': 'q',
