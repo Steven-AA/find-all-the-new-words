@@ -124,7 +124,7 @@ class Article(object):
                 self.known_words.add(word)
         self.new_words = self.new_words - self.known_words
         if self.new_words:
-            logger.info('new words:')
+            logger.info('new words ({}):'.format(len(self.new_words)))
             logger.info(self.new_words)
 
     def user_exit(self):

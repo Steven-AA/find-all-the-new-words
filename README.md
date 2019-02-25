@@ -2,9 +2,12 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/issues)  [![GitHub forks](https://img.shields.io/github/forks/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/network)  [![GitHub stars](https://img.shields.io/github/stars/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/stargazers)  [![GitHub license](https://img.shields.io/github/license/Steven-AA/find-all-the-new-words.svg)](https://github.com/Steven-AA/find-all-the-new-words/blob/master/LICENSE) [![codecov](https://codecov.io/gh/Steven-AA/find-all-the-new-words/branch/master/graph/badge.svg)](https://codecov.io/gh/Steven-AA/find-all-the-new-words)  [![GitHub All Releases](https://img.shields.io/github/downloads/Steven-AA/find-all-the-new-words/total.svg)](https://github.com/Steven-AA/find-all-the-new-words)
 
-
 - 找出文章中的生词（配合anki使用）
 - 示例 [先背生词，再看文章 FAIDK v1.0.0](https://zhuanlan.zhihu.com/p/25003457)
+
+## 提醒
+
+`pyinstaller`目前并不完善，对NLTK的支持有些问题（见[stackoverflow](https://stackoverflow.com/questions/53058052/unable-to-find-c-nltk-data-while-creating-executable-using-pyinstaller)、[#2159](https://github.com/nltk/nltk/issues/2159)), logger也无法正常地读取配置文件。总之对我来说打包体验极差，我已经在这上面浪费了较多的时间，所以**打包exe无限期搁置**，请尝试安装`python`来使用这个工具。如果需要帮助可以加群询问。寒假期间我尽量出一个详尽的安装教程。
 
 ## 依赖
 
@@ -12,15 +15,18 @@
 
 ## 交流
 
+- 维护一个文档，对于文档有任何的问题或建议欢迎通过下方Q群或issue或邮件联系我。TODO
 - 维护一个QQ群，万一有人用呢，也满足一下我的虚荣心，更新可能快点。737389550
 
 <div align=center><img src="https://i.loli.net/2018/09/29/5baedf2a2bd6d.jpg" width = "100"/></div>
 
 ## 已知bug
 
-- [ ] exe 2.1.0后打包
+- [ ] ~~exe 2.1.0后打包~~
 - [ ] `config` 和`new.txt`相关的命令行参数暂不可用
 - [x] 各种特殊的、奇怪的、错误的标点被剔除后，本应分开的两个单词被合并了，比如`before us：that from`会被分成`before`、`usthat`、`from`。
+- [ ] 中途手动退出后，本次学习保存的新单词内容错误
+  - 临时解决方案：将`new.txt`放入`article`文件夹中，运行find模式代码
 
 ## 最近的更新
 
@@ -66,9 +72,10 @@
 
 ### `list`和`NLTK`优劣比较
 
-|原词|list|NLTK|
-|:-|:-|:-|:-|
-|ground|<span style="color:red">grind</span>|ground|
+| Original | list  | NLTK   | both     |
+|:---------|:------|:-------|:---------|
+| ground   | grind | ground |          |
+| also     |       |        | conjurer |
 
 ## exe文件
 
