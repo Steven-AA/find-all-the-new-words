@@ -27,7 +27,8 @@ class Article(object):
         self.keys = self.load_keys()
         if FLAG == '1':
             self.learn()
-        self.finish()
+        if FLAG=='2':
+            self.finish()
 
     def load_keys(self):
         f = self.config
@@ -107,7 +108,7 @@ class Article(object):
             logger.info('only 1 new word')
         else:
             logger.info(str(num) + ' new words')
-        return new_words
+        return sorted(new_words)
 
     def learn(self):
         '''
@@ -115,25 +116,28 @@ class Article(object):
         '''
         logger.info('if you know the word {}, else print {}'.format(self.config['KEY_FOR_KNOW'],self.config['KEY_FOR_NOT']))
         for word in self.new_words:
-            self.num -= 1
             judge = my_input(word+'('+str(self.num)+' Left)',self.keys)
             if judge == self.config['KEY_FOR_QUIT']:
                 self.user_exit()
-                break
+                return
             if judge == self.config['KEY_FOR_KNOW']:
                 self.known_words.add(word)
+            self.num -= 1
         self.new_words = self.new_words - self.known_words
         if self.new_words:
             logger.info('new words ({}):'.format(len(self.new_words)))
             logger.info(self.new_words)
+        self.finish()
 
     def user_exit(self):
         write_each_words(
-            self.config['ARTICLES_PATH'], 'l_'+self.name, list(self.new_words)[-self.num-1:])
+            self.config['ARTICLES_PATH'], 'l_'+self.name, list(self.new_words)[-self.num:])
         logger.debug('writing left words')
-        logger.debug(list(self.new_words)[-self.num-1:])
+        logger.debug(list(self.new_words)[-self.num:])
+        logger.debug('get new words')
+        self.new_words = set(self.new_words[:-self.num])-self.known_words
+        logger.debug(self.new_words)
         self.finish()
-        exit()
 
     def finish(self):
         CONFIG = self.config
@@ -145,5 +149,6 @@ class Article(object):
             NEW_WORDS_EACH_ARTICLE_PATH, self.name, self.new_words)
         with open(CONFIG['MAIN_PATH'] + CONFIG['OLD_WORDS_PATH'], 'w') as old:
             old.write('\n'.join(self.known_words))
+        logger.debug('write new words to '+CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_PATH'])
         with open(CONFIG['MAIN_PATH'] + CONFIG['NEW_WORDS_PATH'], 'a') as new:
             new.write('\n'.join(self.new_words))

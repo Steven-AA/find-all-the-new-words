@@ -1,0 +1,4 @@
+click
+py-getch
+nltk
+pandas

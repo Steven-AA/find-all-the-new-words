@@ -7,7 +7,7 @@
 
 ## 提醒
 
-`pyinstaller`目前并不完善，对NLTK的支持有些问题（见[stackoverflow](https://stackoverflow.com/questions/53058052/unable-to-find-c-nltk-data-while-creating-executable-using-pyinstaller)、[#2159](https://github.com/nltk/nltk/issues/2159)), logger也无法正常地读取配置文件。总之对我来说打包体验极差，我已经在这上面浪费了较多的时间，所以**打包exe无限期搁置**，请尝试安装`python`来使用这个工具。如果需要帮助可以加群询问。寒假期间我尽量出一个详尽的安装教程。
+`pyinstaller`目前并不完善，对NLTK的支持有些问题（见[stackoverflow](https://stackoverflow.com/questions/53058052/unable-to-find-c-nltk-data-while-creating-executable-using-pyinstaller)、[#2159](https://github.com/nltk/nltk/issues/2159)), logger也无法正常地读取配置文件。总之对我来说打包体验极差，我已经在这上面浪费了较多的时间，所以**打包exe无限期搁置**，请尝试安装`python`来使用这个工具。如果需要帮助可以加群询问。~~寒假期间我尽量出一个详尽的安装教程。~~
 
 ## 依赖
 
@@ -16,7 +16,7 @@
 ## 交流
 
 - 维护一个文档，对于文档有任何的问题或建议欢迎通过下方Q群或issue或邮件联系我。TODO
-- 维护一个QQ群，万一有人用呢，也满足一下我的虚荣心，更新可能快点。737389550
+- 维护一个QQ群，737389550
 
 <div align=center><img src="https://i.loli.net/2018/09/29/5baedf2a2bd6d.jpg" width = "100"/></div>
 
@@ -25,11 +25,13 @@
 - [ ] ~~exe 2.1.0后打包~~
 - [ ] `config` 和`new.txt`相关的命令行参数暂不可用
 - [x] 各种特殊的、奇怪的、错误的标点被剔除后，本应分开的两个单词被合并了，比如`before us：that from`会被分成`before`、`usthat`、`from`。
-- [ ] 中途手动退出后，本次学习保存的新单词内容错误
-  - 临时解决方案：将`new.txt`放入`article`文件夹中，运行find模式代码
+- [x] 中途手动退出后，本次学习保存的新单词内容错误
+  - ~~临时解决方案：将`new.txt`放入`article`文件夹中，运行find模式代码~~
 
 ## 最近的更新
 
+- 修复了`中途手动退出后，本次学习保存的新单词内容错误`的bug
+- 对单词列表进行了排序
 - 修复`q`只能退出一个文件的bug
 - 自定义按键
 - 自定义config路径
@@ -37,24 +39,13 @@
 - 修复`getch`无法跨平台问题
 - 增加`pytest`并连接`CodeCov`
 - 修复`new.txt`反复覆盖的bug
-- 增加上一次运行时的生成的`new.txt`是否保留的选择
-- 修复`articles`中的文件没有自动移动到`old_articles`的bug
+- ……
 
 ## 即将到来的新 Feature 预告
 
 **说明**:中断恢复、过多生词自动切割这两个功能其实都是为了解决中途退出保存进度的问题，因此准备中途手动退出保存来解决这些问题
 
 **说明**:有一些新的想法,为了节约时间，`多config选择`不做开发了，可以通过每一个文件夹里面都放一份程序来实现。`自定义config路径`功能暂时保留，用来实现多个文件夹共用一个config。
-
-### 2.0.*
-
-- [x] ~~词形还原~~
-- [x] ~~手动退出~~
-- [x] ~~自定义按键~~
-- [x] ~~自定义 config 路径~~
-- [ ] ~~多 config 选择~~
-- [ ] ~~中断恢复~~
-- [ ] ~~文章含有过多生词自动切割~~
 
 ### 2.1.*
 
@@ -69,14 +60,7 @@
 - 把文章放在 `./article` 文件夹中
 - build 模式用来建立自己的词汇库，即 `old.txt`，同时也可以将新单词列出来，建议建立的时候挑选较短的文章，一篇一篇来
 - 词库建立好了就可以使用 `find` 模式批量查找生词
-
-### `list`和`NLTK`优劣比较
-
-| Original | list  | NLTK   | both     |
-|:---------|:------|:-------|:---------|
-| ground   | grind | ground |          |
-| also     |       |        | conjurer |
-
+  
 ## exe文件
 
 - exe文件 release 里面
@@ -88,6 +72,11 @@
 - [Anki——近乎完美的神器](https://zhuanlan.zhihu.com/-anki)
 
 ## 更新
+
+### 2019年04月26日 2.1.1
+
+- 修复了`中途手动退出后，本次学习保存的新单词内容错误`的bug
+- 对单词列表进行了排序
 
 ### 2018年11月26日 2.1.0
 
