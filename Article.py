@@ -16,10 +16,7 @@ class Article(object):
         self.file_path = config['MAIN_PATH'] + config['ARTICLES_PATH'] + file
         self.fix_dic = load_lemmatization_list_to_dic(
             self.config['LEMMATIZATION_MODE'])
-        OLD_WORDS_PATH = self.config['MAIN_PATH'] + \
-            self.config['OLD_WORDS_PATH']
-        self.known_words = self.split_the_article(
-            self.read_old_words(OLD_WORDS_PATH))
+        self.known_words = self.read_known_words()
         self.article = read_article_from_file(self.file_path)
         self.words = self.split_the_article(self.article, self.file_path)
         self.new_words = self.read_new_words()
@@ -62,6 +59,23 @@ class Article(object):
         logger.debug(word+'-->'+real_word)
         return real_word
 
+    def read_known_words(self):
+        '''
+        load the word have known
+        '''
+        try:
+            with open(self.config['MAIN_PATH'] + self.config['OLD_WORDS_PATH'])as f:
+                all_the_words = f.read()
+        except:
+            logger.info('\'' + self.config['MAIN_PATH'] +
+                        self.config['OLD_WORDS_PATH'] + '\' missing......')
+            all_the_words = ""
+        known_words = self.split_the_article(all_the_words)
+        logger.info(known_words)
+        num = len(known_words)
+        logger.info('There are ' + str(num) + ' words I have known')
+        return known_words
+
     def split_the_article(self, Article, name=None):
         '''
         split the article
@@ -79,23 +93,6 @@ class Article(object):
             logger.debug(set_of_words)
         return set_of_words
 
-    def read_known_words(self, path):
-        '''
-        load the word have known
-        '''
-        try:
-            with open(path)as f:
-                all_the_words = f.read()
-        except:
-            logger.info('\'' + path + '\' missing......')
-            all_the_words = ""
-        known_words = split_the_article(
-            all_the_words, self.config['OLD_WORDS_PATH'])
-        num = len(known_words)
-        logger.info('There are {} words in {}'.format(
-            str(num), self.config['OLD_WORDS_PATH']))
-        return known_words
-
     def read_new_words(self):
         '''
         read new words from article
@@ -108,6 +105,7 @@ class Article(object):
             logger.info('only 1 new word')
         else:
             logger.info(str(num) + ' new words')
+        logger.info(new_words)
         return sorted(new_words)
 
     def learn(self):
@@ -123,7 +121,7 @@ class Article(object):
             if judge == self.config['KEY_FOR_KNOW']:
                 self.known_words.add(word)
             self.num -= 1
-        self.new_words = self.new_words - self.known_words
+        self.new_words = sorted(set(self.new_words) - self.known_words)
         if self.new_words:
             logger.info('new words ({}):'.format(len(self.new_words)))
             logger.info(self.new_words)
@@ -133,7 +131,7 @@ class Article(object):
         write_each_words(
             self.config['ARTICLES_PATH'], 'l_'+self.name, list(self.new_words)[-self.num:])
         logger.debug('writing left words')
-        logger.debug(list(self.new_words)[-self.num:])
+        logger.debug(self.new_words[-self.num:])
         logger.debug('get new words')
         self.new_words = set(self.new_words[:-self.num])-self.known_words
         logger.debug(self.new_words)

@@ -112,25 +112,6 @@ def write_each_words(path, name, new_words):
     except:
         logger.info('failed to creat file of \'' + path + name + '\'')
 
-
-def read_known_words():
-    '''
-    load the word have known
-    '''
-    try:
-        with open(config['MAIN_PATH'] + config['OLD_WORDS_PATH'])as f:
-            all_the_words = f.read()
-    except:
-        logger.info('\'' + config['MAIN_PATH'] +
-                    config['OLD_WORDS_PATH'] + '\' missing......')
-        all_the_words = ""
-    known_words = split_the_article(all_the_words)
-    logger.info(known_words)
-    num = len(known_words)
-    logger.info('There are ' + str(num) + ' words I have known')
-    return known_words
-
-
 def read_article_from_file(path):
     '''
     read file with different encoding
