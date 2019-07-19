@@ -12,3 +12,6 @@ new.txt
 /log/FAIDK.log
 .pytest_cache
 .coverage
+/others/
+/old_articles/
+coverage.xml

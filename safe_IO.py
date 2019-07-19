@@ -150,6 +150,19 @@ def write_important_sentances_to_file(path, name, articel):
     except:
         logger.info('failed to creat file of \'' + path + name + '\'')
 
+def write_vocabulary_to_file(path, name, articel):
+    try:
+        os.makedirs(path)
+    except Exception as e:
+        logger.debug(e)
+        pass
+    try:
+        with open(path + ''.join(name.split('.')[:-1])+'_VO.md', 'w', encoding='utf8') as f_words:
+            f_words.write(articel)
+        logger.info('write vocabulary to file \'' + path + name + '\'')
+    except:
+        logger.info('failed to creat file of \'' + path + name + '\'')
+
 
 def input_without_strange_key():
     while True:

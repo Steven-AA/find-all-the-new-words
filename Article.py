@@ -1,10 +1,11 @@
 import logging
 import re
 
-from nltk.stem import WordNetLemmatizer
 from nltk import tokenize
+from nltk.stem import WordNetLemmatizer
 
 import safe_IO
+from dictionary import *
 from safe_IO import *
 
 logger = logging.getLogger('FAIDK.Article')
@@ -31,10 +32,12 @@ class Article(object):
         if self.config['OUT_PUT_MARKED_ARTICLE']:
             self.out_put_markded_article()
         self.out_put_important_sentences()
+        self.out_put_vocabulary()
     
     def out_put_markded_article(self):
         self.pattern = re.compile(r"(\b"+r"\b|\b".join(self.new_words)+"\b)",flags=re.IGNORECASE)
         self.marked_article = re.sub(self.pattern,self.mark+r"\1"+self.mark,self.article)
+        self.marked_article = re.sub(r"\n", r"\n\n", self.marked_article)
         write_marked_article_to_file("./others/",self.name, self.marked_article)
     
     def out_put_important_sentences(self):
@@ -42,7 +45,13 @@ class Article(object):
         i_sentences = [_ if self.pattern.search(_) else None for _ in sentences]
         write_important_sentances_to_file("./others/",self.name, "\n\n".join(list(filter(None,i_sentences))))
 
-
+    def out_put_vocabulary(self):
+        vocabulary = []
+        for i,_ in enumerate(self.new_words):
+            vocabulary.append(_+"\n\n"+google(_)+"\n\n"+eudic(_))
+            logger.info("looking up... ("+str(self.num-i)+"left)")
+        vocabulary = "\n\n---\n\n".join(vocabulary)
+        write_vocabulary_to_file("./others/",self.name,vocabulary)
 
     def load_keys(self):
         f = self.config
