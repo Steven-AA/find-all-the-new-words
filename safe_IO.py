@@ -131,11 +131,25 @@ def write_marked_article_to_file(path, name, articel):
         logger.debug(e)
         pass
     try:
-        with open(path + ''.join(name.split('.')[:-1])+'.md', 'w', encoding='utf8') as f_words:
+        with open(path + ''.join(name.split('.')[:-1])+'_MA.md', 'w', encoding='utf8') as f_words:
             f_words.write(articel)
-        logger.info('write markde article to file \'' + path + name + '\'')
+        logger.info('write marked article to file \'' + path + name + '\'')
     except:
         logger.info('failed to creat file of \'' + path + name + '\'')
+
+def write_important_sentances_to_file(path, name, articel):
+    try:
+        os.makedirs(path)
+    except Exception as e:
+        logger.debug(e)
+        pass
+    try:
+        with open(path + ''.join(name.split('.')[:-1])+'_IC.md', 'w', encoding='utf8') as f_words:
+            f_words.write(articel)
+        logger.info('write important sentances to file \'' + path + name + '\'')
+    except:
+        logger.info('failed to creat file of \'' + path + name + '\'')
+
 
 def input_without_strange_key():
     while True:

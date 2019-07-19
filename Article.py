@@ -2,6 +2,7 @@ import logging
 import re
 
 from nltk.stem import WordNetLemmatizer
+from nltk import tokenize
 
 import safe_IO
 from safe_IO import *
@@ -29,11 +30,19 @@ class Article(object):
             self.finish()
         if self.config['OUT_PUT_MARKED_ARTICLE']:
             self.out_put_markded_article()
+        self.out_put_important_sentences()
     
     def out_put_markded_article(self):
-        pattern = re.compile(r"(\b"+r"\b|\b".join(self.new_words)+"\b)",flags=re.IGNORECASE)
-        marked_article = re.sub(pattern,self.mark+r"\1"+self.mark,self.article)
-        write_marked_article_to_file("./markds_articles/",self.name, marked_article)
+        self.pattern = re.compile(r"(\b"+r"\b|\b".join(self.new_words)+"\b)",flags=re.IGNORECASE)
+        self.marked_article = re.sub(self.pattern,self.mark+r"\1"+self.mark,self.article)
+        write_marked_article_to_file("./others/",self.name, self.marked_article)
+    
+    def out_put_important_sentences(self):
+        sentences = tokenize.sent_tokenize(self.marked_article)
+        i_sentences = [_ if self.pattern.search(_) else None for _ in sentences]
+        write_important_sentances_to_file("./others/",self.name, "\n\n".join(list(filter(None,i_sentences))))
+
+
 
     def load_keys(self):
         f = self.config
