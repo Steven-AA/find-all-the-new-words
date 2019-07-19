@@ -124,6 +124,18 @@ def read_article_from_file(path):
             article = f_article.read()
     return article
 
+def write_marked_article_to_file(path, name, articel):
+    try:
+        os.makedirs(path)
+    except Exception as e:
+        logger.debug(e)
+        pass
+    try:
+        with open(path + ''.join(name.split('.')[:-1])+'.md', 'w', encoding='utf8') as f_words:
+            f_words.write(articel)
+        logger.info('write markde article to file \'' + path + name + '\'')
+    except:
+        logger.info('failed to creat file of \'' + path + name + '\'')
 
 def input_without_strange_key():
     while True:
@@ -165,6 +177,8 @@ def load_json(path):
         'KEY_FOR_KNOW': '1',
         'KEY_FOR_NOT': '2',
         'KEY_FOR_QUIT': 'q',
+        'OUT_PUT_MARKED_ARTICLE':True,
+        'MARK':'**',
     }
     logger.info('Loading config from ' + path + '...')
     try:

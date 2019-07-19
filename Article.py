@@ -13,6 +13,7 @@ class Article(object):
     def __init__(self, config, file, FLAG):
         self.name = file
         self.config = config
+        self.mark = self.config["MARK"]
         self.file_path = config['MAIN_PATH'] + config['ARTICLES_PATH'] + file
         self.fix_dic = load_lemmatization_list_to_dic(
             self.config['LEMMATIZATION_MODE'])
@@ -26,6 +27,13 @@ class Article(object):
             self.learn()
         if FLAG=='2':
             self.finish()
+        if self.config['OUT_PUT_MARKED_ARTICLE']:
+            self.out_put_markded_article()
+    
+    def out_put_markded_article(self):
+        pattern = re.compile(r"(\b"+r"\b|\b".join(self.new_words)+"\b)",flags=re.IGNORECASE)
+        marked_article = re.sub(pattern,self.mark+r"\1"+self.mark,self.article)
+        write_marked_article_to_file("./markds_articles/",self.name, marked_article)
 
     def load_keys(self):
         f = self.config
