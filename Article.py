@@ -23,7 +23,7 @@ class Article(object):
         self.article = read_article_from_file(self.file_path)
         self.words = self.split_the_article(self.article, self.file_path)
         self.new_words = self.read_new_words()
-        self.num = len(self.new_words)
+        self.num = len(self.new_words)#会被修改，独占，勿用
         self.keys = self.load_keys()
         if FLAG == '1':
             self.learn()
@@ -41,16 +41,18 @@ class Article(object):
         write_marked_article_to_file("./others/",self.name, self.marked_article)
     
     def out_put_important_sentences(self):
-        sentences = tokenize.sent_tokenize(self.marked_article)
+        pp_m_article = re.sub(r"\n",r".\n",self.marked_article)
+        sentences = tokenize.sent_tokenize(pp_m_article)
         i_sentences = [_ if self.pattern.search(_) else None for _ in sentences]
         write_important_sentances_to_file("./others/",self.name, "\n\n".join(list(filter(None,i_sentences))))
 
     def out_put_vocabulary(self):
         vocabulary = []
+        num = len(self.new_words)
         for i,_ in enumerate(self.new_words):
-            vocabulary.append(_+"\n\n"+google(_)+"\n\n"+eudic(_))
-            logger.info("looking up... ("+str(self.num-i)+"left)")
-        vocabulary = "\n\n---\n\n".join(vocabulary)
+            vocabulary.append("#### "+_+"\n\n"+google(_)+"\n\n"+eudic(_))
+            logger.info("looking up "+_+" ("+str(num-i)+"left)")
+        vocabulary = "\n\n".join(vocabulary)
         write_vocabulary_to_file("./others/",self.name,vocabulary)
 
     def load_keys(self):
@@ -66,20 +68,20 @@ class Article(object):
             logger.info('missing ' + path)
             return ''
 
-    def real_word(self, word):
+    def real_word(self, word, LEMMATIZATION_flag=True):
         '''
         find the real word
         '''
         p_forword = re.compile('[a-z,A-Z,\',‘]')
         word_s = p_forword.findall(word)
-        real_word = ''.join(word_s).lower()
-        if self.config['LEMMATIZATION_MODE'] in ['list', 'both']:
+        real_word = ''.join(word_s)#.lower()
+        if LEMMATIZATION_flag and self.config['LEMMATIZATION_MODE'] in ['list', 'both']:
             try:
                 real_word = self.fix_dic[real_word]
             except Exception as e:
                 logger.debug(e)
                 pass
-        if self.config['LEMMATIZATION_MODE'] in ['NLTK', 'both']:
+        if LEMMATIZATION_flag and self.config['LEMMATIZATION_MODE'] in ['NLTK', 'both']:
             wordnet_lemmatizer = WordNetLemmatizer()
             real_word = wordnet_lemmatizer.lemmatize(real_word)
         logger.debug(word+'-->'+real_word)
@@ -96,20 +98,20 @@ class Article(object):
             logger.info('\'' + self.config['MAIN_PATH'] +
                         self.config['OLD_WORDS_PATH'] + '\' missing......')
             all_the_words = ""
-        known_words = self.split_the_article(all_the_words)
+        known_words = self.split_the_article(all_the_words,LEMMATIZATION_flag=False)
         logger.info(known_words)
         num = len(known_words)
         logger.info('There are ' + str(num) + ' words I have known')
         return known_words
 
-    def split_the_article(self, Article, name=None):
+    def split_the_article(self, Article, name=None, LEMMATIZATION_flag=True):
         '''
         split the article
         '''
         sep = re.compile('[ \r\n.,'+self.config['SPECIAL_PUNCTUATION']+' ]')
         logger.debug(sep)
         words = re.split(sep, Article)
-        filcts = (self.real_word(word) for word in words)
+        filcts = (self.real_word(word,LEMMATIZATION_flag=LEMMATIZATION_flag) for word in words)
         set_of_words = set(filcts)
         if name == None:
             pass

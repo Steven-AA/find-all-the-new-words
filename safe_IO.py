@@ -144,7 +144,7 @@ def write_important_sentances_to_file(path, name, articel):
         logger.debug(e)
         pass
     try:
-        with open(path + ''.join(name.split('.')[:-1])+'_IC.md', 'w', encoding='utf8') as f_words:
+        with open(path + ''.join(name.split('.')[:-1])+'_IS.md', 'w', encoding='utf8') as f_words:
             f_words.write(articel)
         logger.info('write important sentances to file \'' + path + name + '\'')
     except:
